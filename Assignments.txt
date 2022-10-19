@@ -1,0 +1,43 @@
+Day-1
+-----
+
+use case: Employee Management 
+Description: Create a standalone employee management application with a menu driven interface
+as below:
+
+1. Add employee
+2. Delete employee
+3. Search Employee
+4. Display all employees
+5. exit
+Enter your choice : 
+
+Based on the choice entered by user, the application should allow the respective operation.
+Menu should be iterative as along as user didnot selected for exit option, it should display 
+iteratively.
+
+For storing the employee data, use appropriate collections and employee information should
+consists of id, name, department.
+
+
+Day-2
+-----
+
+use case: Employee Processing
+Description: create a standalone employee management application for processing the
+employee data using java8 features like, Predicate, Consumer, Function 
+
+Create a list of employees with id, name, department and salary and increment the 
+salary to 1000 those who are having salaries less than 1500/- and print updated employees 
+payslip as below:
+
+Employee Id: 1001
+Employee Name: Praveen Kumar
+Department : Quality
+Salary : 4000
+
+
+Note: Here use collections for storing data, streams for processing the data, Predicates
+to check the conditions, Functions to update the data and Consumers to display the data.
+
+
