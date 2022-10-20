@@ -41,3 +41,10 @@ Note: Here use collections for storing data, streams for processing the data, Pr
 to check the conditions, Functions to update the data and Consumers to display the data.
 
 
+Day-3
+-----
+
+Create a simple application to validate the user credentials by connecting to database. Also, application should allow process for register the user
+details like username and password. Use Servlets as controller for processing, and jdbc to connect to databases.
+
+
