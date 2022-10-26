@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.examples.loginapp.loginmvcapp.dao.LoginDao;
+import com.examples.loginapp.loginmvcapp.dao.Notes;
 import com.examples.loginapp.loginmvcapp.model.User;
+
+
 
 @Controller
 public class HomeController {
@@ -22,7 +25,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/")
 	public ModelAndView test(HttpServletResponse response) throws IOException {
-		return new ModelAndView("home");
+		return new ModelAndView("register");
 	}
 
 	@RequestMapping(value = "/validate")
@@ -41,5 +44,15 @@ public class HomeController {
 			return "pass";
 		else
 			return "fail";
+	}
+	@RequestMapping(value="/register")
+	public ModelAndView register(HttpServletRequest request) throws IOException{
+		int pid = Integer.parseInt(request.getParameter("pid"));
+		String author = request.getParameter("author");
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		Notes notes = new Notes(pid,author,title,description);
+		dao.insertNotes(notes);
+		return new ModelAndView("success");
 	}
 }

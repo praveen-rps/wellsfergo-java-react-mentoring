@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import com.examples.loginapp.loginmvcapp.model.User;
 import com.examples.loginapp.loginmvcapp.model.UserRowMapper;
 
+
+
 @Component
 public class LoginDao {
 	
@@ -21,6 +23,12 @@ public class LoginDao {
 	}
 	
 	// template.update("insert into User values(?,?)", user.getUname(),user.getPasswd()
-	
+	public String insertNotes(Notes notes) {
+		// TODO Auto-generated method stub
+		String sql ="insert into Notes values (?,?,?,?)";
+		template.update(sql,notes.getPid(), notes.getAuthor(), notes.getTitle(), notes.getDescription());
+		return "inserted";
+	}
+
 
 }
