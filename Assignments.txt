@@ -47,4 +47,7 @@ Day-3
 Create a simple application to validate the user credentials by connecting to database. Also, application should allow process for register the user
 details like username and password. Use Servlets as controller for processing, and jdbc to connect to databases.
 
+Day-5
+-----
+Implement the Day-3 task by using Spring MVC and Spring JDBC
 
