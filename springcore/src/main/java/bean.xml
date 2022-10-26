@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- bean definitions here <bean id="employee" class="kindrylspringcore.Employee" 
+		scope="prototype"> <constructor-arg value="9001" /> <constructor-arg value="Praveen" 
+		/> <constructor-arg value="Quality" /> </bean>
+		
+		<bean id="employee" class="kindrylspringcore.Employee"
+		scope="prototype">
+		<property name="empid" value="1001" />
+		<property name="name" value="Kalyan" />
+		<property name="dept" value="Finance" />
+		<property name="address" ref="addr" />
+	</bean>
+	
+	<bean id="employee" class="kindrylspringcore.Employee"
+		scope="prototype">
+		<constructor-arg value="9001" />
+		<constructor-arg value="Praveen" />
+		<constructor-arg value="Quality" />
+		<constructor-arg ref="addr1" />
+	</bean>
+	
+
+	<bean id="add" class="kindrylspringcore.Address" >
+		<property name="dno" value="512" />
+		<property name="street" value="MG Road" />
+		<property name="city" value="Bangalore" />
+	</bean>
+	
+	 -->
+	
+	<bean id="addr" class="kindrylspringcore.Address" init-method="postConstruct" destroy-method="preDestroy">
+		<property name="dno" value="302" />
+		<property name="street" value="SP Road" />
+		<property name="city" value="Hyderabad" />
+	</bean>
+	
+	
+		<bean id="employee" class="kindrylspringcore.Employee"
+		scope="prototype" autowire= "byType">
+		
+		<property name="empid" value="1001" />
+		<property name="name" value="Kalyan" />
+		<property name="dept" value="Finance" />
+		
+		<property name="degrees">
+			<list>
+				<value>BTech</value>
+				<value>MTech</value>
+				<value>MBA</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>
