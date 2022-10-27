@@ -51,3 +51,6 @@ Day-5
 -----
 Implement the Day-3 task by using Spring MVC and Spring JDBC
 
+Day - 6
+-------
+Create the tables in oracle / mysql for the schema diagram attached in the github ( bankschema.png)
