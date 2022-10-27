@@ -1,0 +1,245 @@
+
+USER ACCESS AND DATABASE SECURITY
+---------------------------------
+
+1. used to share the data, database objects with other users.
+
+2. users can also cancel the permission.
+
+3. use the GRANT and REVOKE statements to grant and revoke object previligies.
+
+
+Privilege:
+----------
+
+Privilege are the right to execute a particular SQL statement.
+
+
+Schemas:
+--------
+A schema is a collection of objects, such as table, views and sequences.  The schema is 
+owned by a database user and has the same name as that user.
+
+GRANT:
+------
+
+The GRANT command is used to allow another schema access to a privelege.
+
+GRANT command can be issued not only on TABLE object, but also on VIEWS, SYNONYMS, SEQUENCES etc
+
+The users are GRANTED at time all four(ie., INSERT, UPDATE, DELETE, SELECT) by using ALL.
+
+
+syntax:
+-------
+
+	GRANT <priviliege1[,<Privilege2>[,....] ON <OBJECTNAME> TO USER1 USER|ROLE, PUBLIC ...
+
+
+CREATING USERS:
+---------------
+
+SYNTAX:
+		CREATE USER <USERNAME> IDENTIFIED BY <PASSWORD>
+EG>		CREATE USER PRAVEEN IDENTIFIED BY KUMAR.
+		GRANT CONNECT, RESOURCE TO <USERNAME>
+		GRANT CONNECT, RESOURCE TO PRAVEEN.
+
+Login as Scott
+--------------
+
+	SQL> grant all on emp to praveen.
+
+	sql> grant insert,select, update on dept to praveen.
+
+Grant columns
+-------------
+	sql> grant insert(empno,ename,sal,deptno) on emp to praveen.
+
+
+Note:
+-----
+	1. Only insert and update permission are allowed.
+	
+	SQL> GRANT SELECT ON STUDENT TO USERA, USERB
+	sql> GRANT DELETE ON SUPP TO PUBLIC;
+
+
+PUBLIC: Public keyword represents all users in database.
+	All users can delete on supp table.
+
+Note:
+-----
+
+	we cannot give permission at time on more than on datbase object.
+
+
+steps to be performed 
+---------------------
+
+1. connect to the required user using the USER name and password.
+2. execute the required sQL statement using the object hierarchy.
+
+
+Login as praveen
+----------------
+
+	sql> select * from scott.emp;
+	sql> insert into scott.dept values(50,'SW','HYD');
+	sql> select * from scott.student;
+Note: At time of DML, DRL operations we have to mention owners name.
+
+
+REVOKE COMMAND
+--------------
+
+1. It is used to remove the access allowed by GRANT
+2. REVOKE privileges is assigned not only on TABLE OBJECT, but also on VIEWS, SYNONYMS, 
+   SEQUENCES etc.,
+
+ 
+syntax:
+-------
+ REVOKE <privilege1>[,privilege2....] ON <OBJECTNAME> FROM USER1 [,USER | ROLE, PUBLIC];
+
+
+sql> REVOKE SELECT ON STUDENT FROM PRAVEEN,USERA;
+
+sql> REVOKE ALL ON EMP from PRAVEEN;
+
+
+TYPES OF PRIVILEGES : 1. SYSTEM PRIVILEGES AND 2. OBJECT PRIVILEGES
+-------------------
+
+SYSTEM PRIVILEGES:
+------------------
+
+They allow a user to perform certain action within the database.
+
+object Privileges:
+------------------
+An object privilege allow a user to perform certain actions on database objects.
+
+
+Checking the Object privileges granted:
+---------------------------------------
+
+1. The schema object  that stores the information about the privileges granted is 
+   USER_TAB_PRIVS_MADE;
+
+2. The columns of USER_TAB_PRIVS_MADE ARE:
+	GRANTEE
+	TABLE_NAME
+	GRANTOR
+	PRIVILEGE
+	GRANTABLE
+	HIERARCHY
+
+sql> select GRANTEE,TABL_NAME,GRANTOR, PRIVILEGE from USER_TAB_PRIVS_MADE WHERE TABLE_NAME='EMP'
+
+
+USER_COL_PRIVS
+--------------
+
+This table query to view to the object privileges granted to the user on specific columns.
+
+syntax:
+	SELECT GRANTEE,GRANTOR, COLUMN_NAME FROM USER_COLS_PRIVIS WHERE TABLE_NAME='EMP';
+
+	select grantee from all_tab_privis where grantor='scott' and table_name='emp';
+
+
+Checking OBject privileges Received:
+------------------------------------
+
+The schema object that stores the information about the privileges that are received is 
+USER_TAB_PRIVS_RECD.
+
+The columns of USER_TAB_PRIVS_RECD ARE
+
+1. OWNER
+2. GRANTEE
+3. TABLE_NAME
+4  GRANTOR
+5. PRIVILEGE
+6. GRANTABLE
+7. HIERARCHY
+
+
+sql> select owner,table_name,grantor,privlege from user_tab_privis_recd;
+
+
+Roles in Oracle:
+----------------
+
+A role is named group of related privileges that can be granted to the user.
+
+Advantages:
+-----------
+
+1. Rather than assiging privileges one at a time directly to a user, we can create
+   a ROLE, assign privivleges to that role, and then grant that role to multiple users
+
+2. When you add or delete a privilege from a role, all users and roles assigned that role
+   automatically receive or lose those privileges.
+
+3. we can assign multiple rows to  a single user or roll to another role.
+
+4. a role can be assigned with a password.
+
+ROLES creation
+--------------
+
+1. To create a role we should have the cREATE ROLE SYSTEM privilege
+2. Steps to implement the role:
+	2.1 Roles creation.
+	2.2 Granting privileges to roles
+	2.3 Granting roles to users or objects.
+
+Syntax:
+'	CREATE ROLE <ROLENAME> IDENTIFIED BY PASSWORD.
+
+	create role sales_manager identified by salesaudit.
+
+
+Note: 
+------
+
+We can alter ther ROLE for password and new password.
+
+sql> alter ROLE sales_manager identified by salesaudit;
+
+GRANT A ROLE TO A USER
+----------------------
+
+sql> GRANT SALES_MANAGER TO SCOTT;
+
+GRANTING MULTIPLE ROLES TO USER
+-------------------------------
+
+SQL> GRANT ROLE1, ROLE2,....TO USER;
+
+Checking ROLES granted to a user
+--------------------------------
+
+1. The schema object USER_ROLE_PRIVS specifies the ROLES granted to a USER.
+
+2. The colmn of USER_ROLE_PRIVS
+
+   USERNAME, GRANTED_ROLE, ADMIN_OPTION, DEFAULT_ROLE, OS_GRANTED
+
+SQL> SELECT USERNAME, GRANTED, ROLE FROM USER_ROLE-PRIVS;
+
+
+System priviliges granted to a Role
+-----------------------------------
+
+The Schema object ROLE_SYS_PRIVS specifies the SYSTEM privileges granted to a ROLE.
+
+The columns of ROLE_SYS_PRIVS
+  ROLE, PRIVILEGE, ADMIN_OPTION
+
+
+Object Privileges granted to a ROLE
+-----------------------------------
+

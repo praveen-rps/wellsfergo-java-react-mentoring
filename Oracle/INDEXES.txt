@@ -1,0 +1,267 @@
+
+
+1. not null
+2. unique
+3. default
+4. primary key and foreign key
+5. index
+
+
+
+
+DML opertions on the table
+
+
+1. insert
+2. delete
+3. update
+4. select
+
+search only
+
+
+INDEXES
+-------
+
+1. Index is a schema object, which a pointer locates the physical address of the data.
+
+2. INDEX used by the oracle server to speed up the retreieval, manipulate of rows.
+
+Specification of an Index:
+--------------------------
+
+1. Index can be created explicitly or automatically.
+
+2. Index is activated when indexed column is used in where clause.
+
+3. Index necessity of disk I/O by using a indexed path to locate data quickly.
+
+
+
+4. INdex is used and manitained automatically by the oracle server.
+
+5. When you drop a table, corresponding indexes are also dropped.
+
+
+INDEX CREATION IS OF TWO TYPES:
+-------------------------------
+
+1. Automataic:
+--------------
+
+A unique index is created automatically when you define a primary key or unique constraint in a 
+table definiton.
+
+
+
+2. Manual:
+----------
+
+
+Users can create nonunique indexes on columns to spped up access to the rows.
+
+One table more htan on index can be created, but this does not mean that, more the indexes lead to
+more faster performance.
+
+Each DML operation that is committed on table on a table with indexes means that indexes must
+be updated.
+
+USEr_INDEXES holds the details of Indexes.
+
+
+Process of Indexes:
+--------------------
+
+
+1. Indexeing involves forming atwo dimensioal matrix completely independent of the table
+   on which the index is being created.
+
+2. The two dimensional matrix will have a single column, address field.
+
+   single column: will hold sorted data, extracted from the table column(s) on which index is 
+   created
+
+   Address filed: will hold location of the record in the oracle database (ROWID)
+
+
+Note: The records in the index are stored in the ascendin order of the INDEX column.
+
+
+TYPES OF INDEXES:
+-----------------
+
+NORMAL INDEXES:
+---------------
+
+They are default indexes
+they are created with 
+
+A. BITMAP INDEXES:
+------------------
+
+They stores ROWID associated with a key value as a Bitmap.
+
+B. COMPOSITE INDEX:
+-------------------
+
+If we define a index on more than one column, it is called composite index.
+
+C. PARTITIONED INDEX:
+---------------------
+
+They contain partitions containing an entry for each value that appears in the indexed column
+of the tabole.
+
+FUNCTION BASED INDEXES:
+-----------------------
+
+When we create index on column with function it is called function based index.
+
+Enable query to evaluate values returned by expression.
+
+DOMAIN INDEXES:
+---------------
+
+They are indexes which are instances of an application specific index of type index type.
+
+
+PREREQUISITIES:
+---------------
+
+1. The table or CLUSTER to be indexed myust be in the own schema.
+
+2. INDEX object privilege should be available on the table to INDEXED.
+
+3. create any index SYSTEM privilege must be available.
+
+4. UNLIMITED TABLESPACE system privilege or SPACE QUOTA on TABLE SPACES must be available.
+
+Restriction on Indexed Column:
+------------------------------
+
+An Index cannot be created on column or attributes whose types are LONG, LONG RAW, LOB, REF ETC.,
+
+An INDEX on REF type column or atttibutes have to be declared with a scope clause.
+
+RESTRICTION:
+------------
+
+If index is locally partitioned then the TABLE must be partioned.
+If Global temporary table, then INDEx is also temporary with the same scope, as that of the table.
+
+
+SYNTAX:
+------
+
+	CREATE [UNIQUE] INDEX INDEX_NAME
+	OR [BITMAP] ON TABLENAME(COLUMNNAME,COLUMNNAME,.....)
+	TABLESPACE TABLESPACENAME;
+
+
+UNIQUE: Specify unique to indicates that the value of the column or columns upon which the index
+        is based must be unique.
+
+Retrictions:
+------------
+
+	1. we cannot specify both UNIQUE and BITMAP
+	2. UNIQUE cannot be specified for a domain index.
+	3. BITMAP cannot be specified when creating a global partioned index.
+
+
+CLUSTER INDEX CLAUSE
+--------------------
+
+It is identified the CLUSTER for which a CLUSTER INDEX has to be created.
+
+SIMPLE INDEX EXAMPLE
+--------------------
+
+eg> CREATE INDEX SALID ON EMP(SAL);
+eg> CREATE INDEX DnoIdx on dept(dname);
+
+
+CREATING UNIQUE INDEXES:
+------------------------
+
+eg> CREATE UNIQUE INDEX ENO_UNQ ON EMP(EMPNO);
+
+
+CREATING COMPOSITE UNIQUE INDEXES:
+----------------------------------
+
+composite Index is an index on multiple column.
+
+eg> CREATE UNIQUE INDEX ENO_ENAME_CINX ON EMP(EMPNO,ENAME);
+
+
+Creating Function Based INDEXES:
+--------------------------------
+
+1. A function based index is an index based on expression.
+
+2. The index expression is built from table columns, constants, SQL functions, and user defined
+   functions.
+
+3. Function based indexes defiend with UPPER(colmn_name) or LOWER(colmn_name) allow case
+   insensitive searches.
+
+4. To ensure that the oracle server uses the index rather than performing a full table scan,
+   be sure that the value of the function is not null in subsequent queries.
+
+5. The Oracle server treats indexes with columns marked DESC as function based indexes.
+
+
+eg> CREATE INDEX UPPER_DEPT_NAME_IDX ON DEPT(UPPER(DNAME));
+
+eg> SELECT * FROM DEPT WHERE UPPER(DNAME)='SALES';
+
+note: The function based indexes are used only when the query statement is executed throug
+      the specified function.
+
+
+BITMAP INDEXING:
+----------------
+
+1. SPECIFY BITMAP to indicate the index has to be create witha BITMAP for each DISTINCT KEY.
+
+2. BITMAP indexes store the ROWID's associated with a key values as BITMAP.
+
+3. BITMAP indexes should be used only when the data is infrequently updated.
+
+4. BITMAP indexes add to the cost of all data manipulation transaction against the tables
+   they INDEX.
+5. The ORACLE OPTIMIZER can dynamically convert Bitmap Indexes to ROWID's during the query
+   processing.
+
+
+eg> CREATE BITMAP INDEX EmpBitMapJob on emp(job);
+
+Limitation:
+-----------
+
+BITMAP indexes should not be used for tables involved in Online Transaction Processing applications
+due to internet mehanism oracle user to maintain them.
+
+
+indexes are useful when:
+------------------------
+
+1. A column contains a wide range of values.
+2. A column contains a large number of null values.
+3. One or more columns are frequently used together in WHERE clause or a join condition.
+4. The table is large and most queries are expected to retrieve less than 2 to 4% of the rows.
+5. The column is used frequently in the where clause or join condition.
+
+Indexes are not useful when:
+----------------------------
+
+1. The table is small.
+2. The columns are not often used as a condition in the query.
+3. Most queires are expected to retrieve more than 2 to 4% of the rows in the table.
+4. The table is updated frequently.
+5. The indexed columns are referenced as part of an expression.
+
+
+
+

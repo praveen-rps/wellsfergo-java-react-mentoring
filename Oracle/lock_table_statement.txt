@@ -1,0 +1,107 @@
+LOCK TABLE STATEMENT
+---------------------
+
+Locks:
+------
+
+Locks are the mechanism used to prevent destructive interaction between
+users accessing the same resources simultaneously.
+
+A resource can be either table or a specific row in a table.
+
+The locks provide high degree of data concurrency.
+
+
+Concurrent User:
+----------------
+
+Multiple users using same resource at same time.
+Locking system of a oracle prevent concurrent users to do destructive transactions.
+
+Locks can be acquired at two different levels
+  1. Row level lock (for specific rows)
+  2. Table level lock (for entire table)
+
+Row Level Lock
+--------------
+
+In the row lock, a row is locked exclusively so that other users cannot modify the row
+until the transaction holding the lock is committed or rollback.
+
+eg> select * from emp where empno = 788 for update of hiredate;
+
+sql> update emp set hiredat ='19-jan-79' where empno = 7788;
+
+
+Table level lock
+----------------
+
+A table level lock will protect table data thereby guranteeing dat integrity
+when data is being accessed concurrently by multiple users.
+
+
+A table lock can be in several modes
+	1. Share lock
+        2. Share Update lock
+	3. Exclusive lock
+
+Syntax:
+-------
+	lock table <tablename> in <share or share update or exclusive mode>;
+
+share lock
+----------
+	A share lock locks the table allowing others users to only query but not
+        insert, update or delete rows in a table.
+
+eg> lock table emp in share mode;
+
+
+share update lock
+-----------------
+	It locks rows that are to be updated in a table.
+	It permits other users to concurrently query, insert, update or even lock other
+	rows in the same table.
+	It prevents the other users from updating the row that has been locked.
+
+eg> lock table emp in share update mode; (scott)
+
+scott:
+-----
+	sql> update emp set sal=3000 where deptno=10;
+        (As scott1 cannot upate 10 but can be update 20,30)
+
+Exclusive LOck:
+---------------
+
+When issued by one user, it allows the other user to only query but not inserted, delete or update
+rows in a table.
+
+It is almost similar to share lock but only one user can place an exclusive lock on
+a table at a time, where as many users can place a share lock on the same table at 
+the same time.
+
+eg> lock table emp in exclusive mode.
+
+Note: locks can be released by issuing either 2 rollback or commit.
+
+DeadLock
+--------
+	A deadlock occurs when two users have a lock, each on a seperate object, and 
+	they want to acquire a lock on the each obect.  When this happens, and first
+	user has to wait for the second user to release the lock, but the second user
+	will not release it until the lock on the first uses object is freed.
+
+	At this point, both the users ae at an impasses and cannot proceed with their
+	business.  In such a case, Oracle detects the deadlock automaticlly and solves
+	the problem by aborting one of the two transactions.
+
+Roles in Oracle
+---------------
+	A role is a named group of related privileges that can be granted to the user.
+
+Advantages:
+-----------
+	Rather than assiging privileges one at a time directly to s USER, we can
+	CREATE  role assign privileges to that ROLE, and then grant that role.
+

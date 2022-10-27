@@ -1,0 +1,66 @@
+Creating a view
+---------------
+CREATE [OR REPLACE] VIEW [db_name.]view_name [(column_list)]
+AS
+  select-statement;
+
+Let us look we have a table orderDetails(orderNumber, productCode, quantityOrdered,priceEach,orderLineNumber)
+
+CREATE VIEW salePerOrder AS
+    SELECT 
+        orderNumber, 
+        SUM(quantityOrdered * priceEach) total
+    FROM
+        orderDetails
+    GROUP by orderNumber
+    ORDER BY total DESC;
+
+
+SELECT * FROM salePerOrder;
+
+Creating a view based on another view example
+----------------------------------------------
+CREATE VIEW bigSalesOrder AS
+    SELECT 
+        orderNumber, 
+        ROUND(total,2) as total
+    FROM
+        salePerOrder
+    WHERE
+        total > 60000;
+
+
+Creating a view with join example
+---------------------------------
+CREATE OR REPLACE VIEW customerOrders AS
+SELECT 
+    orderNumber,
+    customerName,
+    SUM(quantityOrdered * priceEach) total
+FROM
+    orderDetails
+INNER JOIN orders o USING (orderNumber)
+INNER JOIN customers USING (customerNumber)
+GROUP BY orderNumber;
+
+SELECT * FROM customerOrders ORDER BY total DESC;
+
+Creating a view with a subquery example
+---------------------------------------
+CREATE VIEW aboveAvgProducts AS
+    SELECT 
+        productCode, 
+        productName, 
+        buyPrice
+    FROM
+        products
+    WHERE
+        buyPrice > (
+            SELECT 
+                AVG(buyPrice)
+            FROM
+                products)
+    ORDER BY buyPrice DESC;
+
+SELECT * FROM aboveAvgProducts;
+

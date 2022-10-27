@@ -1,0 +1,400 @@
+SQL Constraints:
+----------------
+Constraints are the rules enforced on data columns on table. 
+
+These are used to limit the type of data that can go into a table. 
+This ensures the accuracy and reliability of the data in the database.
+
+Constraints could be column level or table level. 
+
+Column level constraints are applied only to one column, whereas
+table level constraints are applied to the whole table.
+
+exams(htno,name,m1,m2,m3);
+
+create table exams(htno int, name varchar(10), m1 int, m2 int, m3 int);
+100
+
+
+1001,praveen,87,69,74
+
+
+
+1002,kumar,654,789,120  ----> wrt to table it is valid
+
+
+
+null,sunil,76,48,68  ----> 
+
+insert into exams(name,m1,m2,m3) values('sunil',87,86,78);
+
+
+
+
+Constraints
+------------
+
+Following are commonly used constraints available in SQL:
+---------------------------------------------------------
+1. NOT NULL Constraint: Ensures that a column cannot have NULL value.
+
+2. DEFAULT Constraint: Provides a default value for a column when none is specified.
+
+3. UNIQUE Constraint: Ensures that all values in a column are different.
+
+4. PRIMARY Key: Uniquely identified each rows/records in a database table.
+
+5. FOREIGN Key: Uniquely identified a rows/records in any another database table.
+
+6. CHECK Constraint: The CHECK constraint ensures that all values in a column satisfy certain conditions.
+
+7. INDEX: Use to create and retrieve data from the database very quickly.
+
+
+
+
+customers(cid,cname,cadd,ctype);
+1001,'praveen','hyd','silver'
+1002,'kumar','blr','gold'
+
+
+orders(oid,cid,odate,eshipdate);
+9001,1001,2022-07-13,2022-07-14
+
+
+
+NOT NULL Constraint:
+--------------------
+
+By default, a column can hold NULL values. 
+
+If you do not want a column to have a NULL value, then you need to
+define such constraint on this column specifying that NULL is now not allowed for that column.
+
+A NULL is not the same as no data, rather, it represents unknown data.
+
+Eg.
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE number(3) NOT NULL,
+ ADDRESS varCHAR (25) ,
+ SALARY DECIMAL (18, 2));
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE number(3) NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2),
+ PRIMARY KEY (ID)
+);
+
+If CUSTOMERS table has already been created, then to add a NOT NULL constraint to SALARY column in Oracle
+and MySQL, you would write a statement similar to the following:
+
+ALTER TABLE CUSTOMERS  MODIFY SALARY int  NOT NULL;
+
+
+
+DEFAULT Constraint:
+--------------------
+The DEFAULT constraint provides a default value to a column when the INSERT INTO statement does not provide
+a specific value.
+
+Eg.
+
+For example, the following SQL creates a new table called CUSTOMERS and adds five columns. Here, SALARY
+column is set to 5000.00 by default, so in case INSERT INTO statement does not provide a value for this column.
+then by default this column would be set to 5000.00.
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY int DEFAULT 5000.00,
+ PRIMARY KEY (ID)
+);
+
+
+If CUSTOMERS table has already been created, then to add a DFAULT constraint to SALARY column, you would
+write a statement similar to the following:
+
+
+ALTER TABLE CUSTOMERS
+ MODIFY SALARY DECIMAL (18, 2) DEFAULT 5000.00;
+
+Drop Default Constraint:
+------------------------
+
+To drop a DEFAULT constraint, use the following SQL:
+
+
+ALTER TABLE CUSTOMERS
+ ALTER COLUMN SALARY DROP DEFAULT;
+
+
+
+
+UNIQUE Constraint:
+------------------
+The UNIQUE Constraint prevents two records from having identical values in a particular column. 
+In the CUSTOMERS table, for example, you might want to prevent two or more people from having identical age.
+
+eg.
+
+The following SQL creates a new table called CUSTOMERS and adds five columns. Here, AGE
+column is set to UNIQUE, so that you can not have two records with same age:
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL unique,  // primary key
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL UNIQUE,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2),
+ PRIMARY KEY (ID)
+);
+
+
+
+If CUSTOMERS table has already been created, then to add a UNIQUE constraint to AGE column, you would write
+a statement similar to the following:
+
+ALTER TABLE CUSTOMERS MODIFY id INT UNIQUE;
+
+
+You can also use following syntax, which supports naming the constraint in multiple columns 
+as well:
+
+ALTER TABLE CUSTOMERS
+ ADD CONSTRAINT myUniqueConstraint UNIQUE(AGE, SALARY);
+ DROP a UNIQUE Constraint:
+
+
+To drop a UNIQUE constraint, use the following SQL:
+
+ALTER TABLE CUSTOMERS
+ DROP CONSTRAINT myUniqueConstraint;
+
+
+
+To create primary key: can be defined at two levels
+----------------------
+1. Column level 
+2. Table level
+
+Column level
+------------
+
+syntax:
+  
+	CREATE TABLE <TABLENAME>
+	( COL1 DT1 [CONSTRAINT CONSTRAINT_NAME] PRIMARY KEY,  
+	  COL2 DT2 constraint constraint_name primary key
+	
+
+	);
+CREATE TABLE CUSTOMERS(
+       ID   INT            PRIMARY KEY,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL,
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),       
+       
+);
+
+drop constraint pk_id;
+
+
+Table Level
+-----------
+
+Syntax:
+
+	CREATE TABLE <TABENAME>
+	(
+		COL1 DT1 NOT NULL,
+		COL2 DT2 ,
+		COL3 DT3,
+
+
+
+
+		CONSTRAINT CONSTRAINT_NAME PRIMARY KEY(COL1,COL2....)
+	);
+
+Eg.
+
+	CREATE TABLE PRODUCT_MASTER
+	(
+	  PNO VARCHAR2(10) CONSTRAINT PK_PNO PRIMARY KEY,
+	  DESC VARCHAR2(20),
+          QTY NUMBER(5),
+          
+	);
+
+
+To add a primary key to an existing table
+-----------------------------------------
+ALTER TABLE CUSTOMER ADD PRIMARY KEY (ID);
+alter table customer drop primary key(id);
+
+
+
+
+To create a primary key on multiplie keys
+------------------------------------------
+CREATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL,
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),        
+       PRIMARY KEY (ID)
+);
+
+CREATE TABLE ORDERS (
+	OID INT primary key,
+	id int, 
+	PNAME VARCHAR2(10),
+	amount int,
+	FOREIGN KEY(id) REFERENCES CUSTOMERS(id)
+);
+
+
+https://github.com/praveeniiht/GAP-Inc-Java-SQL-DevOps.git
+
+
+to add to an existing table
+---------------------------
+
+ALTER TABLE CUSTOMERS ADD CONSTRAINT cust_pkid PRIMARY KEY (ID);
+
+
+To Delete primary key
+---------------------
+
+ALTER TABLE CUSTOMERS DROP PRIMARY KEY ;
+
+customer(cid,cname,city)
+orders(oid,id,product,price)
+
+1001,praveen,hyderabad
+1002,kumar,chennai
+1003,sunil,delhi
+1004,kishore,mumbai
+
+9001,1001,mobile,9800
+9002,1001,tv,9000
+9003,1002,washingmachine, 15000
+9004,1003,fridge,18000
+
+
+
+
+To Create a foreign key
+-----------------------
+
+CREATE TABLE ORDERS (
+	OID INT primary key,
+	id int, 
+	PNAME VARCHAR2(10),
+	amount int,
+	FOREIGN KEY(id) REFERENCES CUSTOMERS(id)
+);
+
+
+To add a foreign key to existing table
+--------------------------------------
+
+ALTER TABLE ORDERS ADD FOREIGN KEY(ID) REFERENCES CUSTOMERS(ID);
+
+To add a foreign key with constraint name
+------------------------------------------
+
+ALTER TABLE ORDERS ADD CONSTRAINT FK_CONSTRAINT FOREIGN KEY(ID) REFERENCES CUSTOMERS(ID)
+
+
+TO Delete foreign key
+---------------------
+
+ALTER TABLE ORDERS DROP CONSTRAINT FK_CONSTRAINT;
+
+
+DISABLING THE CONSTRAINT:
+-------------------------
+
+The constraint can be disabled witout dropping it or recreating it.
+The alter table statement is used with the DISABLE clause.
+
+syntax:
+
+	ALTER TABLE <TABLENAME> DISABLE CONSTRAINT <CONSTRAINT_NAME> [CASCADE];
+
+
+NOTE: The cascade clause disable dependent integrity constraints.
+
+eg>
+
+	alter table emp disable constraint pk_empno;
+	alter table customers disable constraint pkc;
+
+
+ENABLING CONSTRAINT.
+-------------------
+
+The constraint can be enabled without re creating it.
+The alter table statement is used with the enable clause.
+
+SYNTAX:
+	ALTER TABLE <TABLENAME> ENABLE CONSTRAINT <CONSTRAINT_NAME>;
+
+EG>
+	alter table emp enable constraint pk_empno;
+
+
+Viewing Constraints
+--------------------
+
+To view all constraints on table by Query the USER_CONSTRAINTS table.
+
+The codes that are revealed are:
+
+	1. P - Primary
+	2. U - Unique
+	3. R - References
+	4. C - Check & Not Null
+
+eg> SELECT OWNER,CONSTRAINT_NAME, CONSTRAINT_TYPE FRON USER_CONSTRAINTS
+    WHERE TABLE_NAME='FZ_SRV_ITEM';
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CHECK (Age>=18 and age <=100)
+); 
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255),
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+); 
+
+ALTER TABLE Persons ADD CHECK (Age>=18); 
+
+ALTER TABLE Persons DROP CHECK CHK_PersonAge; 
+
+
+	

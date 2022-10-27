@@ -1,0 +1,469 @@
+CASE statement
+--------------
+syntax
+------
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END;
+
+
+SELECT ename, sal,
+CASE
+    when sal >=1000 and sal<=2000 then 'Low salary'
+	when sal >2000 and sal<=3000 then 'average salary'
+    when sal >=3000 and sal <4000 then 'high salary'
+	when sal >=4000 then 'extemely high'
+    ELSE "very low salary"
+END
+FROM emp; 
+
+
+
+Autoincrement feature
+----------------------
+CREATE TABLE gapemployees (
+    emp_no INT  AUTO_INCREMENT primary key,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50)
+);
+
+INSERT INTO gapemployees(first_name,last_name) VALUES('John','Doe'),
+                                                      ('Mary','Jane');
+
+
+DELETE FROM employees WHERE emp_no = 2;
+
+INSERT INTO employees(first_name,last_name) VALUES('Jack','Lee');
+
+you will observe entry as below:
+1 John Doe
+3 Jack Lee
+
+
+Boolean Type
+------------
+CREATE TABLE tasks (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    completed BOOLEAN
+);
+
+INSERT INTO tasks(title,completed) VALUES('Master MySQL Boolean type',true);
+INSERT INTO tasks(title,completed) VALUES('Design database table',false); 
+
+SELECT 
+    id, 
+    title, 
+    IF(completed, 'true', 'false') completed
+FROM
+    tasks;
+
+Text type
+---------
+MySQL provides four TEXT types: TINYTEXT, TEXT, MEDIUMTEXT, and LONGTEXT
+
+TINYTEXT – 255 Bytes (255 characters)  -- varchar(255);
+TEXT – 64KB (65,535 characters)
+MEDIUMTEXT – 16MB (16,777,215 characters)
+LONGTEXT – 4GB (4,294,967,295 characters)
+
+
+CREATE TABLE articles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    summary TEXT
+);
+
+
+
+{
+	"name":"praveen",
+	"city":"Hyderabad",
+	"email":"praveen@Gmail.com"
+}
+
+
+
+
+Json type
+---------
+CREATE TABLE table_name (
+    ...
+    json_column_name JSON,
+    ... 
+); 
+
+[ {
+	"name":"Bangalore",
+	 "min":22,
+     "max":27
+  },
+  {
+	"name":"Hyderabad",
+    "min":29,
+	"max":31
+   }
+]
+
+<cities>
+	<city>
+		<name>Bangalore</name>
+		<min>22</min>
+		<max>27</max>
+	</city>
+	<city>
+		<name>Hyderabad</name>
+		<min>29</min>
+		<max>31</max>
+	</city>
+</cities>
+
+
+
+
+
+CREATE TABLE events( 
+  id int auto_increment primary key, 
+  event_name varchar(255), 
+  visitor varchar(255), 
+  properties json, 
+  browser json
+);
+
+
+CREATE TABLE fisevents( 
+  event_name varchar(255), 
+  visitor varchar(255), 
+  properties json, 
+  browser json
+);
+
+
+
+
+
+INSERT INTO fisevents  
+VALUES (
+  'pageview', 
+   '1',
+   '{ "page": "/" }',
+   '{ "name": "Safari", "os": "Mac", "resolution": { "x": 1920, "y": 1080 } }'
+),
+('pageview', 
+  '2',
+  '{ "page": "/contact" }',
+  '{ "name": "Firefox", "os": "Windows", "resolution": { "x": 2560, "y": 1600 } }'
+),
+(
+  'pageview', 
+  '1',
+  '{ "page": "/products" }',
+  '{ "name": "Safari", "os": "Mac", "resolution": { "x": 1920, "y": 1080 } }'
+),
+(
+  'purchase', 
+   '3',
+  '{ "amount": 200 }',
+  '{ "name": "Firefox", "os": "Windows", "resolution": { "x": 1600, "y": 900 } }'
+),
+(
+  'purchase', 
+   '4',
+  '{ "amount": 150 }',
+  '{ "name": "Firefox", "os": "Windows", "resolution": { "x": 1280, "y": 800 } }'
+),
+(
+  'purchase', 
+  '4',
+  '{ "amount": 500 }',
+  '{ "name": "Chrome", "os": "Windows", "resolution": { "x": 1680, "y": 1050 } }'
+);
+
+
+SELECT id, browser->'$.name' browser FROM events;
+
+SELECT browser->>'$.name' browser, 
+      count(browser)
+FROM events
+GROUP BY browser->>'$.name';
+
+To calculate the total revenue by the visitor
+---------------------------------------------
+SELECT visitor, SUM(properties->>'$.amount') revenue
+FROM events
+WHERE properties->>'$.amount' > 0
+GROUP BY visitor;
+
+
+ENUM Datatype
+-------------
+
+CREATE TABLE table_name (
+    ...
+    col ENUM ('value1','value2','value3'),
+    ...
+);
+enum Weekdays = (Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday)
+
+Sunday --->1
+Monday ---> 2
+Tuesday -->3
+
+Enum day = Sunday+1;
+
+
+CREATE TABLE tickets (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    priority ENUM('Low', 'Medium', 'High') NOT NULL
+)
+
+INSERT INTO tickets(title, priority) VALUES('Scan virus for computer A', 'High');
+INSERT INTO tickets(title, priority) VALUES('Upgrade Windows OS for all computers', 1);
+
+instead of using the Low enumeration value, we used value 1. Since Low is mapped to 1, it is acceptable.
+
+INSERT INTO tickets(title, priority)
+VALUES('Install Google Chrome for Mr. John', 'Medium'),
+      ('Create a new user for the new employee David', 'High');
+
+INSERT INTO tickets(title) VALUES('Refresh the computer of Ms. Lily');  
+since priority is defined as not null mysql remembers first enum value as default value and inserts the same
+value in its absence.
+
+
+To insert multiple Rows
+------------------------
+Syntax:
+
+INSERT INTO table_name (column_list)
+VALUES
+	(value_list_1),
+	(value_list_2),
+	...
+	(value_list_n);
+
+
+CREATE TABLE projects(
+	project_id INT AUTO_INCREMENT, 
+	name VARCHAR(100) NOT NULL,
+	start_date DATE,
+	end_date DATE,
+	PRIMARY KEY(project_id)
+);
+
+INSERT INTO 
+	projects(name, start_date, end_date)
+VALUES
+	('AI for Marketing','2019-08-01','2019-12-31'),
+	('ML for Sales','2019-05-15','2019-11-20');
+
+INSERT INTO FISCUSTOMERS(CID,NAME,ADDRESS,PIN)
+VALUES
+(1005,'KISHORE','CHENNAI',600001),
+(1006,'MAHESH','MUMBAI',400003),
+(1007,'SURESH','DELHI',110001);
+
+
+MySQL INSERT ON DUPLICATE KEY UPDATE example
+---------------------------------------------
+CREATE TABLE devices (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+SELECT id, name FROM devices;
+INSERT INTO devices(name) VALUES ('Printer') ON DUPLICATE KEY UPDATE name = 'Printer';
+
+If there is no name with Printer value is there then it will inserts as Printer else ignores.
+
+INSERT INTO devices(id,name) VALUES (2,'Printer') ON DUPLICATE KEY UPDATE name = 'Central Printer';
+Here if an row with printer exists then it will inserts as Central Printer
+
+MySQL INSERT IGNORE example
+---------------------------
+CREATE TABLE subscribers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(50) NOT NULL UNIQUE
+);
+
+INSERT INTO subscribers(email) VALUES('john.doe@gmail.com');
+
+
+INSERT INTO subscribers(email)
+VALUES('john.doe@gmail.com'), 
+      ('jane.smith@ibm.com');
+
+Error Code: 1062. Duplicate entry 'john.doe@gmail.com' for key 'email'
+
+INSERT IGNORE INTO subscribers(email)
+VALUES('john.doe@gmail.com'), 
+      ('jane.smith@ibm.com');
+
+1 row(s) affected, 1 warning(s): 1062 Duplicate entry 'john.doe@gmail.com' for key 'email' Records: 2  
+Duplicates: 1  Warnings: 1
+
+Another advantage of insert ignore is, when you try to insert data with invalid size, it truncates and
+inserts and issues a warning.
+
+CREATE TABLE tokens (
+    s VARCHAR(6)
+);
+
+INSERT INTO tokens VALUES('abcdefg');
+Error Code: 1406. Data too long for column 's' at row 1
+
+
+INSERT IGNORE INTO tokens VALUES('abcdefg');
+MySQL truncated data before inserting it into the tokens table. In addition, it issues a warning.
+
+
+MySQL ON DELETE CASCADE example
+--------------------------------
+CREATE TABLE buildings (
+    building_no INT PRIMARY KEY AUTO_INCREMENT,
+    building_name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE rooms (
+    room_no INT PRIMARY KEY AUTO_INCREMENT,
+    room_name VARCHAR(255) NOT NULL,
+    building_no INT NOT NULL,
+    FOREIGN KEY (building_no) REFERENCES buildings (building_no) ON DELETE CASCADE
+);
+
+INSERT INTO buildings(building_name,address)
+VALUES('ACME Headquaters','3950 North 1st Street CA 95134'),
+      ('ACME Sales','5000 North 1st Street CA 95134');
+
+INSERT INTO rooms(room_name,building_no)
+VALUES('Amazon',1),
+      ('War Room',1),
+      ('Office of CEO',1),
+      ('Marketing',2),
+      ('Showroom',2);
+
+DELETE FROM buildings WHERE building_no = 2;
+As you can see, all the rows that reference to building_no 2 were automatically deleted.
+
+
+Using MySQL REPLACE to insert a new row
+---------------------------------------
+REPLACE [INTO] table_name(column_list)
+VALUES(value_list);
+
+CREATE TABLE cities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50),
+    population INT NOT NULL
+);
+
+INSERT INTO cities(name,population)
+VALUES('New York',8008278),
+	  ('Los Angeles',3694825),
+	  ('San Diego',1223405);
+
+SELECT * FROM cities;
+
+REPLACE INTO cities(id,population)
+VALUES(2,3696820);
+
+SELECT * FROM cities;
+
+First, REPLACE statement attempted to insert a new row into cities the table. 
+The insertion failed because the id 2 already exists in the cities table.
+
+Then, REPLACE statement deleted the row with id 2 and inserted a new row with the 
+same id 2 and population 3696820. Because no value is specified for the name column, 
+it was set to NULL.
+
+
+
+Insert from select command
+--------------------------
+INSERT INTO table_name(column_list)
+SELECT 
+   select_list 
+FROM 
+   another_table
+WHERE
+   condition;
+
+CREATE TABLE suppliers (
+    supplierNumber INT AUTO_INCREMENT,
+    supplierName VARCHAR(50) NOT NULL,
+    phone VARCHAR(50),
+    addressLine1 VARCHAR(50),
+    addressLine2 VARCHAR(50),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    postalCode VARCHAR(50),
+    country VARCHAR(50),
+    customerNumber int,
+    PRIMARY KEY (supplierNumber)
+);
+
+SELECT 
+    customerNumber,
+    customerName,
+    phone,
+    addressLine1,
+    addressLine2,
+    city,
+    state,
+    postalCode,
+    country
+FROM
+    customers
+WHERE
+    country = 'USA' AND 
+    state = 'CA';
+
+INSERT INTO suppliers (
+    supplierName, 
+    phone, 
+    addressLine1,
+    addressLine2,
+    city,
+    state,
+    postalCode,
+    country,
+    customerNumber
+)
+SELECT 
+    customerName,
+    phone,
+    addressLine1,
+    addressLine2,
+    city,
+    state ,
+    postalCode,
+    country,
+    customerNumber
+FROM 
+    customers
+WHERE 
+    country = 'USA' AND 
+    state = 'CA';
+
+
+Using SELECT statement in the VALUES list
+-----------------------------------------
+
+CREATE TABLE stats (
+    totalProduct INT,
+    totalCustomer INT,
+    totalOrder INT
+);
+
+INSERT INTO stats(totalProduct, totalCustomer, totalOrder)
+VALUES(
+	(SELECT COUNT(*) FROM products),
+	(SELECT COUNT(*) FROM customers),
+	(SELECT COUNT(*) FROM orders)
+);
+

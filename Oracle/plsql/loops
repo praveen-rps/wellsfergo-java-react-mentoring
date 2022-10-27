@@ -1,0 +1,107 @@
+CASE selector 
+   WHEN 'value1' THEN S1; 
+   WHEN 'value2' THEN S2; 
+   WHEN 'value3' THEN S3; 
+   ... 
+   ELSE Sn;  -- default case 
+END CASE;
+
+DECLARE 
+   grade char(1) := 'A'; 
+BEGIN 
+   CASE grade 
+      when 'A' then dbms_output.put_line('Excellent'); 
+      when 'B' then dbms_output.put_line('Very good'); 
+      when 'C' then dbms_output.put_line('Well done'); 
+      when 'D' then dbms_output.put_line('You passed'); 
+      when 'F' then dbms_output.put_line('Better try again'); 
+      else dbms_output.put_line('No such grade'); 
+   END CASE; 
+END; 
+/
+
+
+
+LOOP 
+   Sequence of statements; 
+END LOOP; 
+
+
+DECLARE 
+   x number := 10; 
+BEGIN 
+   LOOP 
+      dbms_output.put_line(x); 
+      x := x + 10; 
+      IF x > 50 THEN 
+         exit; 
+      END IF; 
+   END LOOP; 
+   -- after exit, control resumes here  
+   dbms_output.put_line('After Exit x is: ' || x); 
+END; 
+/
+
+
+
+DECLARE 
+   x number := 10; 
+BEGIN 
+   LOOP 
+      dbms_output.put_line(x); 
+      x := x + 10; 
+      exit WHEN x > 50; 
+   END LOOP; 
+   -- after exit, control resumes here 
+   dbms_output.put_line('After Exit x is: ' || x); 
+END; 
+/
+
+
+
+WHILE condition LOOP 
+   sequence_of_statements 
+END LOOP; 
+
+
+
+DECLARE 
+   a number(2) := 10; 
+BEGIN 
+   WHILE a < 20 LOOP 
+      dbms_output.put_line('value of a: ' || a); 
+      a := a + 1; 
+   END LOOP; 
+END; 
+/ 
+
+
+
+FOR counter IN initial_value .. final_value LOOP 
+   sequence_of_statements; 
+END LOOP;
+
+
+DECLARE 
+   a number(2); 
+BEGIN 
+   FOR a in 10 .. 20 LOOP 
+      dbms_output.put_line('value of a: ' || a); 
+  END LOOP; 
+END; 
+/
+
+Reverse for loop
+-----------------
+
+
+DECLARE 
+   a number(2) ; 
+BEGIN 
+   FOR a IN REVERSE 10 .. 20 LOOP 
+      dbms_output.put_line('value of a: ' || a); 
+   END LOOP; 
+END; 
+/
+
+

@@ -1,0 +1,156 @@
+SQL * LOADER
+------------
+
+
+Working Scheme:
+---------------
+
+SQL * Loader uses a control file called loader control file, wich contains instructions 
+for the execution, manipulation, and filtering of the records contained in the input
+datafiles.  During execution, SQL * loader produces a log file with the operation.  
+If there are records with problem in the input files, a file with the rejected  records
+is produced.
+
+Discarded or Rejected Records
+-----------------------------
+
+The records read from input files that cannot be inserted in the database are written
+in separate files for further checking or correction.
+
+Bad Files
+---------
+
+A bad file contains the records that were rejected by SQL* loader or by oracle.  Normally
+this occurs when the record format is invalid.  A common situation and quotation marks
+missing in a field, or a field without the separation comma, after it is approved by SQL *
+Loader, the record is inserted in the database.  However, oracle can reject it violates 
+constraint.
+
+Discard File
+------------
+
+SQL * Loader can also create a fie called discard file. The discard file is created
+when it was specified as activated.  It contains the records that did not pass
+through the selection filter of the control files.
+
+Log Files
+---------
+
+When executed SQL * Loader, creates a log file containing  detailed information about the
+data processing, including information about possible errors.
+
+The SQL* Loader control files
+-----------------------------
+
+The control file specifies how data in the input file is treated, which tables will
+receive it, which conversions are made, and so on.
+
+This is a text document file, and the commands to be interpreted by SQL * Loader are 
+written to it.  They include the specification of the input file location characteristics
+of rows and columns, specification of data types, and so on.  The contents of the file
+depend on the type of data configuration.  However, we can say that it is divided into
+three parts.
+
+The first section contains general information, such as INFILE option to specify the input
+file, the specification of the set of characters, or global options such as rows, 
+records to skip and so on.
+
+The second section may contain the INTO TABLE commands each of these commands contains
+information relating to the table that will receive data.
+
+The third section is optional and can store input data, turining the control file into
+a data file.
+
+Load File
+---------
+This is a mandatory command that tell SQL* Loader to configure data.
+
+Infile
+-------
+This specifies the input data file.  If the filename extension is omitted, data is 
+assumed. If on asterisk is specified, the program assumes that data is inside its
+own control file, after the word BEGINDATA.
+
+
+eg>
+
+INFILE
+INFILE test.dat
+INFILE 'c:\examples\datafile.dat'
+
+
+Append / Replace / Truncate
+----------------------------
+
+If the table to be configured are empty, you can use the INSERT option.  If the tables
+have contents, the options APPEND, REPLACE or TRUNCATE can be used.
+
+APPEND adds the rows to the end of the table, REPLACE deletes all the rows of the table
+before inserting new ones, and TRUNCATE adds the rows in an attempt to obtain the best
+performances.
+
+
+
+Delimiters
+-----------
+
+special characters can delimit fields at type char, data or numeric external.  
+The delimited fields can be enclosed in a character or terminated by another
+character.
+
+ex>
+
+load data
+infile 'd:\dept.txt'
+insert into table dept
+fields terminated by ","
+(deptno,dname,loc)
+
+
+
+load data
+infile "d:\dept.txt"
+append into table dept
+fields terminated by ","
+(deptno,dname,loc)
+
+
+load data
+infile "d:\dept.txt"
+truncate into table dept
+fields terminated by ","
+(deptno,dname,loc)
+
+
+load data
+infile "d:\dept.txt"
+replace into table dept
+fields terminated by ","
+(deptno,dname,loc)
+
+
+load data
+infile *
+truncate into table dept
+fields terminated by ","
+(deptno,dname,loc)
+begindata
+60,sw,hyd
+70,exp,hyd
+
+
+
+load data
+infile "d:\dept.txt"
+infile "d:\dept1.txt"
+insert into table dept
+fields terminated by ","
+(deptno,dname,loc)
+
+
+
+to execute sqlldr utility to load data
+---------------------------------------
+
+sqlldr userid=database_userid/password@instance_name control=path_control_file 
+log=location_of_logfile bad=location_of_badfile discard=location_of_bad_file

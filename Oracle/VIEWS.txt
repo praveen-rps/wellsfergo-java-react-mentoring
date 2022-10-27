@@ -1,0 +1,223 @@
+VIEWS
+-----
+
+A view logical arrangement of data on a table in the Oracle / MySQL
+
+It can be defined as an stored select statement.
+It will nOt hold data or store data by itself.
+It is a logical tabel based on one or more tables or views.
+view can be created based on a table called a Base table.
+View can be created as Object Views or Relational Views.
+The Object views support
+
+LOBs, OBject types, REFs, Nested Tabes, and Varrays.
+
+DML, DESC, SELECT allowed or views.
+
+Prerequisites:
+--------------
+
+1. Should have create view system previlege.
+2. To create sub view, we need UNDER ANY VIEW system privilege
+3. The Owner of the schema should have SELECT,INSERT, UPDATE or DELETE rows from all
+   tables or views on which VIEW is based.
+4. The above privileges must be pranted the privilege directly, rather than a role.
+
+Advantages of Views:
+--------------------
+
+1. provides high security while sharing data between users.
+2. USER-VIEWS hold the details of views(date dictionary table).
+3. view can be used to make simple queires to retrieve the result of complicated queries.
+4. Views provide groups of users acces to according to their particular criteria.
+
+SYNTAX:
+-------
+
+	CREATE [OR REPLACE] [FORCE | NO FORCE] VIEW VIEW_NAME 
+ 	[ AliasName1[,AliasName2....] As SubQuery
+	WITH { CHECK OPTION/READ ONLY}
+	CONSTRAINT constraintname ];
+
+	OR REPLACE: Re creates the view if already exists.
+	FORCE: specifies the view should not be create if the base table does not exits, 
+	       which is default.
+	NO FORCE: creates the view only if the base tables exists, which is the default.
+
+Alias Name: Specifies names for the expression selected by the view query.
+
+WITH CHECK OPTION: Specifies that only rows accessible to the view can be INSERTED or UPDATED
+ 		   or DELETED.
+
+CONSTRAINT: cONSTRAINT is the name assigned tO the WITH CHECK OPTION or READ ONLY constraint.
+
+WITH READ ONLY: ensures that no DML operations can be performed on this view.
+
+Types of VIEWS
+--------------
+
+Simple Views:
+-------------
+	The view which is created wihtout following clauses:
+		Join Condition, Group By, Having Clause, SET Operators and Distinct.
+
+Complex Views:
+	The view which is created with any restriction clause is called complex view.
+	complex views can contain sub queries.
+
+	The sub query can contain, queries, that retrieve from multiple base tables. groups
+	rows using by GROUP BY or DISTINCT cloause, contain a function call.
+
+Selecting Data from View:
+-------------------------
+
+sql> SELECT NAME, JOB FROM EMPLOYEES;
+
+SQL> SELECT 'EMP ID', NAME, "BASIC SALARY" SAL*12 FROM EMPLOEES;
+
+SQL> select empno, name, to_char("Basic Salary", '99,99,999.99') Monthly, "Basic Salary"*12 Annual
+     from employes where "Basic Salary" > 2500;
+
+COMPLEX VIEW EXAMPLES
+---------------------
+
+
+
+SQL> Create VIEW EmpInfo As
+		SELECT E.EMPNO Employee NO, E.ename Name, D.Deptno DepartmentId,
+		D.DName DepratmentName from Emp e, Dept D
+		where D.deptno = E.deptno
+		Order by D.Deptno;
+
+sql> create view empgrades as select e.ename name, e.sal basic, s.grade grade
+     from emp e, salgrade s
+     where e.sal between s.losal and s.hisal order by s.grade.
+
+sql> create view empmanager as select rownum serialno, Initcap(e.ename)||'works under'||m.ename
+     "Employee and managers" from emp e, emp m where e.mgr = m.empno;
+
+sql> create or replace VIEW orgDesignations as
+     select job from emp where deptno=10 union select job from emp where deptno in (20,30);
+
+
+VIEW IN DATA DICTIONARY:
+------------------------
+
+Once the view has been created, we can query upon the DATA DICTIONARY table user called
+USER_VIEWS to see the name and definition of the view.
+
+The TEXT of the SELECT statement that constitutes the VIEW is stored in a LONG Column.
+
+
+SELECT GRANTEE FROM All_Tab_Privs where grantor='system' and table_name='OrgDesg';
+
+Creating views with columns declarations
+----------------------------------------
+eg>
+	CREATE OR REPLACE VIEW EMPV (ID_NUMBER,NAME,SAL,DEPARTMENT_ID) AS SELECT EMPNO,ENAME,SAL,DEPTNO FROM EMP WHERE DEPTNO=20;
+
+
+
+Retrieving Data from View:
+--------------------------
+
+1. Retriees the view definition from the data dictionary table USER_VIEWS
+2. check the access priviloeges for the view.
+3. We can retrieve data from a view as you would from any table.
+4. we can display either the contents of the entire view or just specific rows and columns.
+
+sql> SELECT GRANTEE FROM ALL_TABS-PRIVS WHERE GRANTOR='SCOTT' AND TABLE_NAME='OrgDesignations';
+
+
+Modify a View:
+--------------
+
+
+1. OR REPLACE Option is used to modify an existing view with a new definiton.
+2. A VIEW can be altered without dropping, recreating and regranting object privileges.
+
+3. The assigned column aliases in the CREATE VIEW clause are listed in the same order as the 
+   column in the sub query.
+
+Creating Views with columns Declarations
+----------------------------------------
+
+When a VIEW is being created, we can specify the names of the columns, that it can project,
+along with the view definition.
+
+
+SQL> CREATE OR REPLACE VIEW EmpV (id_number,name,sal, department_id) as 
+     sELECT empno, ename,sal, deptno FROM emp where deptno = 30;
+
+sql> select * from empv;
+
+sql> create view vdept20 as select * from emp where deptno = 20;
+
+
+INSERTING THE TOTAL DATA OF EMPLOYEES FROM DEPARTMENT 20 USING VIEW:
+--------------------------------------------------------------------
+
+sql> create table dept20 as select * from vdept20;
+
+sql> create table empgrades (employee, designation, basicsalary, grade) as
+     select ename,job,sal,grade from emp e, salgrade s where e.sal between
+     s.losal and s.hisal;
+
+
+DROPPING VIEW:
+--------------
+
+1. A view can remove wihout losing data, because a view is based on underlying tables in the
+   databae.
+
+2. The DROP VIEW statement is used to remove a view permanently
+
+3. Dropping a view has no effect on the tables upon which the iew is created.
+
+4. VIEWS or APPLICATIONS based on deleted views become invalid.
+
+5. we need DROP ANY VIEW privileges to remove the VIEWS.
+
+syntax:
+-------
+		> DROP VIEW viewname;
+		> DROP VIEW EMPGRADE;
+
+INLINE VIEWS:
+-------------
+
+1. An INline view is a subquery with an aliases (or correlation) that you can use within
+   a sql statement.
+
+2. an inline view is not a scheme object.
+
+3. An inline view is placing a subquery in the FROM clause and giving that subquery an alias.
+
+
+examples:
+--------
+
+sql> select e.ename, e.sal, e.deptno, i.maxsal
+     from em e, (select deptno, max(sal) from emp group by Deptno) i
+     where e.deptno = i.deptno and e.sal < i.maxsal;
+
+Rules for performing DML 
+-------------------------
+
+1. dml operations can be performed upon a table through view.
+2. a row can be removed from a view unless it contains.
+
+	join conditon
+	group by clause
+	having clause
+	set operators
+	distinct / unique keyword
+	the column defined by expressions
+
+3. data can be added through a view, unoless it contains any of the above rules
+   and there are not NUT NULL columns.
+
+
+
+
+

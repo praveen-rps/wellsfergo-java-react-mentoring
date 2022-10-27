@@ -1,0 +1,268 @@
+
+ORDER BY:  This clause is used to arrange the columns in the sequantial order either in
+           asencending / descending  order
+
+SYNTAX
+------
+
+SELECT column_name, column_name
+FROM table_name
+ORDER BY column_name ASC|DESC, column_name ASC|DESC;
+
+
+Eg. SELECT * FROM EMP ORDER BY NAME DESC;
+
+
+
+Group by
+---------
+This clause is used to group the same set of items into a logical group of rows.
+
+SYNTAX
+------
+
+SELECT column_name, aggregate_function(column_name)
+FROM table_name
+WHERE column_name operator value
+GROUP BY column_name; 
+
+Guidelines to use group by clause
+-----------------------------------
+
+1. All group by caluse columns list may or may not used in select clause.
+
+2. The extra non group functional column should be declared in the group by clause.
+
+3. if the group function is included in a select clause, we should not use individual result columns.
+
+4. using where clause, rows can be pre excluded before dividing then into groups.
+
+5. column alaises cannot be used in the group by clause.
+
+examples.
+--------
+
+1. select job from emp group by job;
+
+2. select deptno from emp group by deptno;
+
+3. select mgr from emp group by mgr;
+
+4. select to_char(hiredate,'yyyy') Yeargroup from emp group by to_char(hiredate,'yyyy');
+
+5. select to_char(hiredate,'Month') MothGroup from emp group by to_char('hiredate','month');
+
+
+creating group wise summaries
+-----------------------------
+
+1. select deptno, count(*) from emp group by deptno;
+
+2. select deptno, avg(sal) from emp group by deptno orderby avg(sal);
+
+3. select deptno, min(sal), max(sal) from emp group by deptno;
+
+4. select ename, max(sal) from emp group by deptno;
+
+
+HAVING CLAUSE
+=============
+
+The HAVING clause was added to SQL because the WHERE keyword could not be used 
+with aggregate functions.
+
+
+SELECT column_name, aggregate_function(column_name)
+FROM table_name
+WHERE column_name operator value
+GROUP BY column_name
+
+
+EG. select deptno, count(*) from emp where sal > 1000 group by deptno 
+    having count(*) > 4 order by deptno desc;
+
+examples of group by and having clauses
+----------------------------------------
+
+1. select deptno, count(deptno) from emp group by deptno having count(deptno) >5;
+
+2. select deptno, count(deptno) from emp having count(deptno) > 3 group by deptno;
+
+3. select deptno, avg(sal) from emp group by deptno having avg(sal) >2500;
+
+4. select job, sum(sal) Payroll from emp where job<>'SALESMAN' group by job having sum(sal) >=5000 
+   order by sum(sal) desc;
+
+Query:  find the deptno, min, max and sum sals for the dept whose clerks min sal is less than 1000
+
+5. select deptno, min(sal), max(sal), sum(sal) from emp where job='CLERK' group by deptno 
+   having min(sal) <1000;
+
+6. select deptno, avg(sal), sum(sal), max(sal), min(sal) from emp group by deptno 
+   having count(deptno) >3;
+
+7. select deptno, avg(sal), sum(sal) from emp group by deptno having avg(sal)>2500;
+
+8. select deptno, job, avg(sal), sum(sal) from emp group by deptno, job having avg(sal) >2500;
+
+9. 
+
+
+
+
+along with group we can use rollup or cube, these are used to find the sub total automatically.
+
+
+rollup : It is used to find the sub total based on single column.
+------
+
+syntax:
+-------
+
+SELECT COL1, COL2... FROM TABLENAME GROUP BY ROLLUP (COL1, COL2...)
+
+EG. SELECT DEPTNO, JOB , SUM(SAL) FROM EMP GROUP BY ROLLUP (DEPTNO,JOB);
+
+
+cube: It is used to find the sub total based on multiple columns specified
+----
+
+Syntax:
+-------
+
+SELECT COL1,COL2.... FROM TABLENAME GROUP BY CUBE(COL1, COL2 ...);
+
+EG. SELECT DEPTNO, JOB, SUM(SAL) FROM EMP GROUP BY CUBE (DEPTNO, JOB);
+
+
+SQL JOIN
+--------
+An SQL JOIN clause is used to combine rows from two or more tables, 
+
+based on a common field between them.
+
+
+The most common type of join is: SQL INNER JOIN (simple join). 
+An SQL INNER JOIN returns all rows from multiple tables where the join condition is met.
+
+
+If we are joining n tables, then we have to use (n-1) Joins.
+
+
+Now a days all database systems are using the models of " 9i joins" or " ANSI JOINS" such as
+
+1. INNER JOIN	   : Returns all rows when there is at least one match in BOTH tables
+
+2. LEFT  JOIN : Return all rows from the left table, and the matched rows from the right table
+
+3. RIGHT JOIN : Return all rows from the right table, and the matched rows from the left table
+
+4. FULL  JOIN  : Return all rows when there is a match in ONE of the tables
+
+
+
+
+Internally in database we have default join that is cross join it depends on cartesian product.
+
+Note: We can also retrieve data without joins also, in that case oracle server retreives
+      using the cross join only.
+
+
+
+INNER JOIN
+----------
+
+
+The INNER JOIN keyword selects all rows from both tables as long as there is a match between 
+the columns in both tables.
+
+
+SYNTAX:
+-------
+
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+OR
+
+SELECT column_name(s)
+FROM table1
+JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+LEFT JOIN
+---------
+
+The LEFT JOIN keyword returns all rows from the left table (table1),
+with the matching rows in the right table (table2). 
+The result is NULL in the right side when there is no match.
+
+
+
+SYNTAX:
+-------
+
+SELECT column_name(s)
+FROM table1
+LEFT JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+OR
+
+
+SELECT column_name(s)
+FROM table1
+LEFT OUTER JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+RIGHT JOIN
+----------
+
+The RIGHT JOIN keyword returns all rows from the right table (table2), 
+with the matching rows in the left table (table1). 
+The result is NULL in the left side when there is no match.
+
+
+SYNTAX:
+------
+
+SELECT column_name(s)
+FROM table1
+RIGHT JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+OR
+
+SELECT column_name(s)
+FROM table1
+RIGHT OUTER JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+FULL JOIN OR FULL OUTER JOIN
+----------------------------
+
+The FULL OUTER JOIN keyword returns all rows from the left table (table1) 
+and from the right table (table2).
+The FULL OUTER JOIN keyword combines the result of both LEFT and RIGHT joins.
+
+
+SYNTAX:
+-------
+
+
+SELECT column_name(s)
+FROM table1
+FULL OUTER JOIN table2
+ON table1.column_name=table2.column_name;
+
+
+
+

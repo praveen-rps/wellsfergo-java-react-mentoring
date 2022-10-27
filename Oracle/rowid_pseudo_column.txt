@@ -1,0 +1,49 @@
+ROWID Pseudo Column
+-------------------
+
+ROWID  is an exact physical address of a row.
+
+ROWID is used by oracle to locate any row.
+
+The Rowid value is assign by oracle itself.
+
+rowid are unique identifies for a row in a table.
+
+when a row is deleted, oracle may reassign its rowid to a new row that is inserted.
+
+the rowid can never be inserted, update and deleted manually.
+
+the rowid pseudo column can be used in select and where clauses.
+
+
+sql> select rowid, empno, ename from emp;
+
+sql> select max(rowid) from emp;
+
+sql> select * from emp where rowid='AABN8CAAHAAAVPCAAD';
+
+sql> select * from emp p
+     where rowid < (select max(rowid) from emp s where p.ename=s.ename);
+
+
+sql> delete from emp p
+     where rowid <(select max(rowid) from emp s where p.ename=s.ename);
+
+sql> select * from stu where rowid not in(select min(rowid) from stu group by s_id);
+
+sql> select * from stu where rowid not in (select min(rowid) from stu group by s_id);
+
+sql> select empno, ename from emp where (rowid,1) in (select rowid, mod(rownum,2) from emp);
+
+sql> select rownum,ename from emp group by rownum, ename having mod(rownum,2)=0;
+
+sql> select B.sal, sum(a.sal) from emp A, emp B
+     where A.rowid < B.rowid
+     group by B.Rowid, B.sal;
+
+sql> select B.ename, B.job, B.sal, sum(A.sal) "Cum Sal"
+     from emp A, emp B
+     where A.rowid < = B.rowid
+     group by B.rowid, B.sal, B.ename, B.job;
+
+

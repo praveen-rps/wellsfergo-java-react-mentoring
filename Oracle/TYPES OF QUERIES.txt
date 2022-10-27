@@ -1,0 +1,421 @@
+Query is an command or instrcution given to mysql engine to extract the data
+
+
+
+QUERY TYPES
+-----------
+
+1. ROOT QUERY
+2. PARENT QUERY OR QUTER QUERY OR MAIN QUERY
+3. CHILD QUERY OR INNER QUERY OR SUB QUERY
+
+
+Root Query:  The query which is not depend on any other query for its conditions value.
+-----------
+or Independent query.
+
+eg. select ename, sal from emp where deptno =10;
+
+
+parent query:
+-------------
+
+The query which depend on any other query for its condition value.
+cREATE
+
+	select * from emp where deptno = (select deptno from dept where loc='chicago');
+	select deptno from dept where loc='chicago'--- Root Query
+
+
+Sub Query:
+----------
+
+1. The query which provides, conditional values to its parent query.
+
+2. A sub query in the WHERE clause of a SELECT statement is called as NESTED SUBQUERY.
+
+3. A sub Query in the FROM clause of a SELECT statement is called as INLINE VIEW.
+
+4. A sub query can be part of a column, in the SELECT list.
+
+5. sub query can contain another sub query.
+
+6. Oracle imposes no limit on the number of sub squery leves in the FROM clause of the top level
+   query.
+
+7. within the WHERE clause up to 255 sub queries can be nested.
+
+8. To make the statement easier for readibility, qualify the columns in a sub query with the table
+   or table alias.
+
+NOte: Parent query and sub query both are combined.
+
+
+Purpose of Sub Query
+--------------------
+
+1. To define the set of rows to be inserted into the target table of an INSERT or CREATE TABLE
+   statement.
+
+2. To define the set of rows to be included in a view or a materialized INSERT or CREATE TABLE
+   statmenet.
+
+3. To define one or more values to be asigned to existing rows in UPDATE statement.
+
+4. to provide values for condition in a WHERE clause, HAVING clause START WITH clause of 
+   SELECT, UPDATE and DELETE statements.
+
+SUB QUERY PRINCIPLE
+-------------------
+
+1. Solve a problem by combining the two queries, placing one query inside the othe query.
+
+2. The inner query or the sub query returns a value that is used by the outer query upon 
+   the main query.
+
+SUb QUery USAGE
+---------------
+
+1. A sub query is a select statement that is embedded in a clause of anothe SELECT statement.
+
+2. We can build powerful statements out of simple ones by using Sub QUeries.
+
+3. They can be very useful when you need to select rows from a table with a condition that
+
+   depends on the data in the table itself.
+
+syntax:
+-------
+
+
+	SELECT select_list FROM TABLE
+        WHERE Columnname/expr operator 
+	( SELECT select_list FROM TABLE);
+
+
+comparision conditions fall into two classes:
+---------------------------------------------
+
+1. Sigle row operators (>,= ,>=, <, <= )
+
+2. Multiple row operators (IN, ANY, ALL)
+
+
+SINGLE ROW SUB QUERIES:
+-----------------------
+
+These queries returns only one row from the Inner SELECT statement.
+
+MULTIPLE ROW SUB QUERIES:
+-------------------------
+These queries returns more than one row from the Inner SELECT statement.
+
+
+Guidelines for Using SUbQueries
+-------------------------------
+
+1. Enclosed sub queries in parentheses.
+
+2. Place sub queries on the right side of the comparision conditio.
+
+3. The ORDER BY clause in the sub query is not needed unless you are performing top analysis.
+
+4. Only one ORDER BY clause can be used for a SELECT statement.
+
+5. Two classes of comparision conditions are used in Sub Queries
+   --> Single row operators.
+   --> MUltiple row operators.
+
+
+Simple SubQuery:  Sub Query processed first and processed completely
+----------------
+
+Co related sub Query: 
+---------------------
+
+In the co related sub query a parent query will be exexcuted first and based on the output of 
+outer query the inner query execute.
+
+IF the parent query returns N rows inner query executed for N times.
+
+examples for simple sub query with single row:
+-----------------------------------------------
+
+1. select empno, ename, sal, deptno from emp
+   where sal < ( select sal from emp where empno= 7566);
+
+
+2. select empno, ename, job from emp
+   where job = ( select job from emp where ename =Upper('ford')) ;
+
+
+3. Select empno, ename, hiredate, sal job from emp
+   where hiredate > (select hiredate from emp where ename ='MILLER')
+   ORDER by sal;
+
+4. select empno, ename, sal, job from emp
+   where deptno = (select deptno from dept where dname='sales');
+
+5. select empno, ename, sal, job from emp
+   where deptno = (select deptno from dept where loc= 'NEW YORK') and job = 'CLERK';
+
+
+6. select empno, ename, sal, job from emp
+   where deptno = (Select deptno from dept where dname ='SALES');
+
+
+7. select empno, ename, sal, comm, sal+IFNull(comm,0) from emp
+   where deptno = (select deptno from dept where loc='CHICAGO' );
+
+
+8. select * from emp where deptno = (select deptno from emp where ename='FORD') and
+   job in (select job from emp where deptno= (select deptno from dept where dname='SALES'));
+
+
+Applying GROUP functions in SUB QUERIES
+---------------------------------------
+
+1. The data from the main query can be displayed by using a Group function in a sub query.
+
+2. As a group function returns a single row, the query passes the success state. The inner 
+   sub query should not have a group by clause in this scenario.
+
+
+eg.>
+
+1. Find the details of highest salary paid employee
+2. Find the details of lowest salary paid employee
+3. Find the details of all emp's whose sal is > than the avg sal of all emp's
+
+select * from emp order by sal desc limit by 1;
+
+
+
+
+
+
+
+
+1. Find the details highest salary paid employee
+    select ename, job, sal from emp
+   where sal = (select max(sal) from emp );
+
+2. Find the details of lowest salary paid employee
+   select ename, job , sal from emp
+   where sal =(select min(sal) from emp );
+
+3. Find the details of all emp's whose sal is > than the avg sal of all emp's
+
+
+   select ename, job, sal from emp
+   where sal>(select avg(sal) from emp);
+
+4. select ename, job,sal from emp
+   where sal <(select variance(sal) from emp);
+
+
+Appliying HAVING clause with Sub Queries
+----------------------------------------
+
+1. A sub query can be also applied in HAVING clause.
+2. The oracle server executes the sub query, and the result are returned into the having clause
+   of the main query.
+
+10 800
+20 100
+30 950
+
+
+
+eg>
+
+1. Find the deptno which is getting the min(sal) > min(sal) of deptno 20
+
+   Select deptno, min(sal) from emp group by deptno 
+   having min(sal) > (select min(sal) from emp where deptno=20);
+
+
+2. select job, avg(sal) from emp group by job having avg(sal) in
+  (select avg(sal) from emp group by job);
+
+
+3. select job, avg(sal) from emp
+   group by job having avg(sal) <(select (avg(sal)) from emp group by job );
+
+
+Sub Query returns more than one row:
+------------------------------------
+
+1. sub queries that return more than one row are called multiple row sub queries.
+
+2. we use a multiple row operator instead of a single row operator, with a multiple
+   row sub query.
+
+3. use multiple row comparision operators.
+
+
+	IN --> Equal to any memeber in the list.
+
+	ANY/SOME -> compare value to each value returned by the sub query.
+
+	ALL --> compare value to every value returned by te sub query.
+
+
+eg>
+
+1. select ename, sal, deptno from emp
+   where sal in (select max(sal) from emp group by deptno );
+
+
+2. select ename, sal, job, deptno from emp
+   where sal in (select max(sal) from emp group by job);
+
+3. select ename, sal, deptno from emp
+   where sal in (select min(sal) from emp group by deptno);
+
+
+ANY Operator
+------------
+
+1. select ename, sal, deptno from emp
+   where sal < SOME(1250,1500,1600);
+
+
+2. select ename, sal, deptno from emp
+   where sal < SOME( (select sal from emp where job='SALESMAN');
+
+3. select ename, sal, deptno, job from emp
+   where sal < ANY(select sal from emp where deptno in (20,30) and job <> 'MANAGER' );
+
+
+4. select empno, ename, sal, deptno from emp
+   where sal > ANY(select sal from emp where deptno = 10);
+
+
+Note: < ANY means less than the maximum value in the list.
+----------------------------------------------------------
+
+eg. 
+
+1. select ename, sal, deptno from emp where sal > SOME(1250,1500,1600);
+
+
+2. select ename, sal, deptno from emp where sal > ANY(select sal from emp where job='SALESMAN');
+
+
+Note: > ANY means more than the minimum value in the list.
+----------------------------------------------------------
+
+eg.
+
+1. select ename, job, deptno from emp
+   where al = ANY(select sal from emp where job='MANAGER');
+
+
+= ANY it is equvilanet to IN Operator.
+
+
+ALL OPerator
+------------
+
+
+1. select ename, job, sal, deptno from emp
+   where sal > ALL(select sal from emp where deptno=20);
+
+2. select ename, job, sal, deptno from emp
+   where sal > all(select avg(sal) from emp group by deptno);
+
+
+NOte: > ALL means more than the maximum in the list
+
+1. select ename, job, sal, deptno from emp
+   where sal>all(select avg(sal) from emp group by deptno );
+
+USING SET OPERATORS
+-------------------
+
+
+1. The set opearators combine the results of two or more component queires into one result,
+   Queries containing SET operators are called compound queries.
+
+2. The number of columns and the data types of the columns being selected must be identical in all
+   the select statements used in the query.  The names of the columns need not be identical
+
+3. All SET operators have equal predence, if a sql statement contains multiple set operators, the oracle
+   server evaluates them from left to right if no parenthesis explicitly mentioned.
+
+Different SET operators.
+-----------------------
+
+1. UNION
+
+2. UNION ALL
+
+3. INTERSECT
+
+4. MINUS
+
+(1,2,3,4) -(2,3) = (1,4)
+(2,3) - (1,2,3,4) = null
+
+
+Note: When ever these operators are used to select stateent must have 
+
+1. equal number of columns
+
+2. similar data types
+
+UNION
+-----
+
+1. It returns all the rows
+
+guidelines;
+----------
+1. NULL values are not ignored during duplicate checking.
+2. By default, the output is sorted in ascending order of the first column of the select clause.
+3. the IN operator has a higher precendence that union operator.
+4. UnionAll combines all elements including duplicates.
+
+
+INTERSECT
+---------
+It returns all rows common to multiple queries.
+
+guidelines:
+-----------
+1. Reversing the order of the intersected tables does not alter the result.
+2. it does not ignore NULL values.
+
+ MINUS
+------
+The minus operator returns rows from the first query that are not present in the second query.
+
+Examples
+---------
+
+1. SELECT JOB FROM EMP WHERE DEPTNO=10 UNION SELECT JOB FROM EMP WHERE DEPTNO = 20
+
+2. SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO=10 UNION SELECT DEPTNO, JOB FROM EMP WHERE DEPTO=20;
+
+3. SELECT EMPNO,ENAME FROM EMP WHERE DEPTNO=10 UNION SELECT EMPNO, ENAME FROM EMP WHERE DEPTNO=20 ORDER B 2;
+
+4. SELECT EMPNO, ENAME, JOB FROM EMP WHERE DEPTNO=(SELECT DEPTNO FROM DEPT WHERE DNAME='SALES')
+   UNION
+   SELECT EMPNO,ENAME,JOB FROM EMP WHERE DEPTNO=(SELECT DEPTNO FROM DEPT WHERE DNAME='ACCOUNTING');
+
+5. SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO=10 UNION ALL SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO=20;
+
+6. SELECT JOB FROM EMP WHERE DEPTNO=10 INTERSECT SELECT JOB FROM EMP WHERE DEPTNO=20;
+
+7. SELECT JOB FROM EMP WHERE DEPTNO=10 MINUS SELECT JOB FROM EMP WHERE DEPTNO=20;
+
+8. SELECT DEPTNO, JOB FROM EP WHERE DEPTNO=10 UNION SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO=20;
+
+9. SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO =10 INTERSECT SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO =30;
+
+10. SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO=10 INTERSECT SELECT DEPTNO, JOB FROM EMP WHERE DEPTNO=20;
+
+
+
+

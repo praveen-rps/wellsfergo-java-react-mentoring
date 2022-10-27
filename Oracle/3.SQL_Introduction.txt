@@ -1,0 +1,428 @@
+Commands
+SQL---> 
+
+The Structured Query Language is used to communicate the RDBMS
+
+Structured Query Language
+--------------------------
+
+1. SQL is prounced as SEQUEL.
+
+2. Dr. E.F Codd published the paper on relational database model in June 1970
+   at IBM 
+
+3. SEQUEL later become SQL.
+
+4. It allows the user to communicate with the server.
+
+5. It is easy to learn and use.
+
+6. It is functionally complete, by allowing the user to define, retrive and 
+   manipulte the data.
+
+
+
+
+ create a database;
+
+syntax:
+
+			CREATE DATABASE <DATABASENAME>;
+		    CREATE DATABASE INSURANCE;
+
+
+
+	show databases;  ---> list all the datbases in the current user;
+    use <database>  ----> to select any particular database for actions
+    use insurance;   ---> it will selects insurance database
+
+show tables; --> used to display all the tables in the selected database;
+
+
+where clause is used to provide a condition
+
+select * / columnlist from <tablename> where <condition>;
+
+select * from emp where deptno=10;
+select ename,job,sal where deptno=10;
+
+
+SYNATAX:
+
+
+CREATE TABLE TABLENAME(
+COLUMNAME DATATYPE,
+COLUMNNAME DATATYPE,
+COLUMNAME DATATYPE,
+;
+;
+COLUMNNAME DATATYPE);
+
+
+MYSQL
+------
+1. DECIMAL  --- NUMBERS WITH FRACTION
+2. INT  --- WHOLE NUMBERS
+3. TEXT  --  TINYTEXT, TEXT , LARGETEXT
+4. VARCHAR  -- 
+5. BOOLEAN  -- TRUE,FALSE
+6. DATE  --  YYYY/MM/DD
+------------------------------------
+7. CLOB  -- CHARACTERLOB
+8. BLOB  -- BINARYLOB
+
+CREATE TABLE CUSTOMERS
+(CID INT,
+ NAME VARCHAR(20),
+ ADDRESS VARCHAR(50),
+ CTYPE VARCHAR(20)
+);
+
+DESC <TABLENAME>  ---> SHOW THE STRUTURE OF THE DATABASE;
+desc customers;
+
+
+alter ----> add / modify / drop
+
+ALTER TABLE <TABLENAME> ADD/MODIFY/DROP COLUMN COLUMNAME DATATYPE;
+
+
+
+components of SQL
+-----------------
+
+Oracle SQL compiles the industry acceptable standards
+the SQL comtains 5 sub languages
+
+	1. DATA RETRIEVAL / QUERY LANGUAGE (DRL / DQL)
+			SELECT
+			-> It is used to retrieve the information from database for read only purpose.
+
+	select * / column_list from <tablename>;
+   select * from emp;
+
+select ename,sal,job from emp;
+
+delete and truncate both will delete the data from the tables.
+but delete will not erase the constraints.
+
+
+
+	2. DATA MANIPULATION LANGUAGE (DML)
+			INSERT, UPDATE, DELETE
+			-> It is used to manipulate the data in database objects.
+
+	SYNTAX:
+			INSERT INTO <TABLENAME> VALUES (V1,V2,V3...);
+			INSERT INTO FISCUSTOMERS VALUES(1001,'PRAVEEN','HYDERABAD',500049);
+
+			INSERT INTO FISCUSTOMERS(COLUMNLIST) VALUES (VALUES);
+			INSERT INTO FISCUSTOMERS(CID,NAME,ADDRESS) VALUES (1003,'SUNIL','BANGALORE');
+
+
+
+	3. DATA DEFINITON LANGUAGE (DDL)
+			CREATE, ALTER, DROP, TRUNCATE , RENAME
+			-> used to define database objects, creation, modification and removing
+
+	4. DATA CONTROL LANGUAGE (DCL)
+			GRANT, REVOKE
+			-> It is used to share the information between user.
+
+	5. TRANSACTION CONTROL LANGUAGE (TCL)
+			COMMIT, ROLLBACK, SAVEPOINT
+			-> It is used to cancel DML operations.
+
+ACID---> Atomicity, Consistancy, Isolation and Durarbility
+
+All or None ---Either perform all the operations or truncate all the operations
+funds transfer
+
+s1;
+s2;
+s3;
+withdraw amount from sender
+s4;
+s5;
+s6;
+deposit tio reveiver
+
+
+student(htno,name,branch)
+1001,praveen,cse
+1002,kumar,civil
+
+1001
+1002
+
+SELECT * / COLUMN_LIST FROM <TABLENAME>;
+
+
+1-1 ----> 
+
+person(pname,address,dob,pob,aid)  ---- passport(pno,loc,idate,expdate,nop,typeofpass)
+
+m-m
+Trainer --- Trainee
+1-m
+
+
+1-m  ---->
+
+person --- google accounts
+university ----> Affilated colleges
+1-->M 
+
+General-  dark blue
+Diplomatic  -- Orange
+exective- -- White
+
+
+draw the oracle architecture.
+
+explain sql* plus buffer.
+
+
+What is table?
+---------------
+The data in RDBMS is stored in database objects called tables. 
+The table is a collection of related data entries and it consists of columns and rows.
+Remember, a table is the most common and simplest form of data storage in a relational database. 
+
+Following is the example of a CUSTOMERS table:
++----+----------+----+-----------+----------+
+| ID | NAME 	| AGE| ADDRESS 	 | SALARY   |
++----+----------+----+-----------+----------+
+| 1 | Praveen 	| 32 | Ahmedabad | 2000.00  |
+| 2 | Khilan 	| 25 | Delhi 	 | 1500.00  |
+| 3 | kaushik 	| 23 | Kota 	 | 2000.00  |
+| 4 | Chaitali 	| 25 | Mumbai 	 | 6500.00  |
+| 5 | Hardik 	| 27 | Bhopal 	 | 8500.00  |
+| 6 | Komal 	| 22 | MP 	     | 4500.00  |
+| 7 | Muffy 	| 24 | Indore 	 |10000.00  |
+| 8 | Praveen
+| 37 | Delhi	 |10000.00  |	
+---------------------------------------------
+
+
+What is field?
+--------------
+
+Every table is broken up into smaller entities called fields. 
+
+The fields in the CUSTOMERS table consist of ID,NAME, AGE, ADDRESS and SALARY.
+
+A field is a column in a table that is designed to maintain specific information about every record in the table.
+
+
+
+
+What is record or row?
+-----------------------
+
+A record, also called a row of data, is each individual entry that exists in a table. For example, there are 7 records
+in the above CUSTOMERS table. 
+
+Following is a single row of data or record in the CUSTOMERS table:
++----+----------+-----+-----------+----------+
+| 1  | Ramesh   | 32  | Ahmedabad |  2000.00 |
++----+----------+-----+-----------+----------+
+
+
+
+What is column?
+---------------
+A column is a vertical entity in a table that contains all information associated with a specific field in a table.
+For example, a column in the CUSTOMERS table is ADDRESS, which represents location description and would
+
+consist of the following:
++-----------+
+| ADDRESS   |
++-----------+
+| Ahmedabad |
+| Delhi     |
+| Kota      |
+| Mumbai    |
+| Bhopal    |
+| MP        |
+| Indore    |
++----+------+
+
+
+What is NULL value?
+-------------------
+A NULL value in a table is a value in a field that appears to be blank, 
+which means a field with a NULL value is a field with no value.
+
+It is very important to understand that a NULL value is different than a zero value  
+null value is one that has been left blank during record creation.
+
+
+SQL Constraints:
+----------------
+Constraints are the rules enforced on data columns on table. 
+These are used to limit the type of data that can go into a table. 
+This ensures the accuracy and reliability of the data in the database.
+
+Constraints could be column level or table level. 
+
+Column level constraints are applied only to one column, whereas
+table level constraints are applied to the whole table.
+
+
+UI -----> BL------> Database
+
+html / jsp forms -------> java Objects -----> JDBC ----> MySQL
+
+Students
+
+Htno,name,m1,m2,m3
+1001,praveen,20,40,60
+1002,kumar,79,65,54
+
+
+create table students(htno int, name varchar(20), m1 int, m2 int , m3 int);
+insert into students values(1001,'praveen',20,40,60);
+insert into students values(1002,'kumar',79,65,54);
+
+
+
+
+
+
+
+Following are commonly used constraints available in SQL:
+---------------------------------------------------------
+1. NOT NULL Constraint: Ensures that a column cannot have NULL value.
+
+2. DEFAULT Constraint: Provides a default value for a column when none is specified.
+
+3. UNIQUE Constraint: Ensures that all values in a column are different.
+
+4. PRIMARY Key: Uniquely identified each rows/records in a database table.
+
+5. FOREIGN Key: Uniquely identified a rows/records in any another database table.
+
+6. CHECK Constraint: The CHECK constraint ensures that all values in a column satisfy certain conditions.
+
+7. INDEX: Use to create and retrieve data from the database very quickly.
+
+
+
+
+NOT NULL Constraint:
+--------------------
+
+By default, a column can hold NULL values. 
+
+If you do not want a column to have a NULL value, then you need to
+define such constraint on this column specifying that NULL is now not allowed for that column.
+
+A NULL is not the same as no data, rather, it represents unknown data.
+
+
+
+Eg.
+
+CREATE TABLE CUSTOMERS20(
+ ID INT 
+ NAME VARCHAR (20),
+ AGE INT ,
+ ADDRESS CHAR (25) ,
+ SALARY INT
+);
+
+
+If CUSTOMERS table has already been created, then to add a NOT NULL constraint to SALARY column in Oracle
+and MySQL, you would write a statement similar to the following:
+
+ALTER TABLE CUSTOMERS20 MODIFY SALARY DECIMAL (18, 2) NOT NULL;
+
+create table students20( htno int, name varchar(20), m1 int, check (m1>=0 and m1<=100));
+
+DEFAULT Constraint:
+--------------------
+The DEFAULT constraint provides a default value to a column when the INSERT INTO statement does not provide
+a specific value.
+
+Eg.
+
+For example, the following SQL creates a new table called CUSTOMERS and adds five columns. Here, SALARY
+column is set to 5000.00 by default, so in case INSERT INTO statement does not provide a value for this column.
+then by default this column would be set to 5000.00.
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2) DEFAULT 5000.00,
+ PRIMARY KEY (ID)
+);
+
+
+If CUSTOMERS table has already been created, then to add a DFAULT constraint to SALARY column, you would
+write a statement similar to the following:
+
+
+ALTER TABLE CUSTOMERS20 MODIFY SALARY DECIMAL (18, 2) DEFAULT 5000.00;
+
+
+Drop Default Constraint:
+------------------------
+
+To drop a DEFAULT constraint, use the following SQL:
+
+
+ALTER TABLE CUSTOMERS
+ ALTER COLUMN SALARY DROP DEFAULT;
+
+
+
+
+
+UNIQUE Constraint:
+------------------
+The UNIQUE Constraint prevents two records from having identical values in a particular column. 
+In the CUSTOMERS table, for example, you might want to prevent two or more people from having identical age.
+
+eg.
+
+The following SQL creates a new table called CUSTOMERS and adds five columns. Here, AGE
+column is set to UNIQUE, so that you can not have two records with same age:
+
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL UNIQUE,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2),
+ PRIMARY KEY (ID)
+);
+
+
+
+If CUSTOMERS table has already been created, then to add a UNIQUE constraint to AGE column, you would write
+a statement similar to the following:
+
+ALTER TABLE CUSTOMERS
+ MODIFY AGE INT NOT NULL UNIQUE;
+
+
+You can also use following syntax, which supports naming the constraint in multiple columns as well:
+
+ALTER TABLE CUSTOMERS
+ ADD CONSTRAINT myUniqueConstraint UNIQUE(AGE, SALARY);
+ DROP a UNIQUE Constraint:
+
+
+To drop a UNIQUE constraint, use the following SQL:
+
+ALTER TABLE CUSTOMERS
+ DROP CONSTRAINT myUniqueConstraint;
+
+
+

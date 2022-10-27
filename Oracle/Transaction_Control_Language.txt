@@ -1,0 +1,99 @@
+TRANSACTION CONTROL LANGUAGE
+----------------------------
+Transaction Control
+-------------------
+A transaction is a logical unit of work.  All changes made to the
+database can be referred to as an transaction. Transaction changes
+can be made permanent to a database only if they are committed.
+
+Transaction start and end cases
+-------------------------------
+-> A transaction begins when the first executable SQL statement is
+   encouraged.
+
+-> The transaction terminates when the following specification occur.
+     1. A commit or Rollback is issued.
+     2. A DDL statement is issued.
+     3. A DCL statement is issued.
+     4. The user exits the sQL * PLUS
+     5. Failure of Machine or System crashes.
+
+Commit: It used to save changes made by DML statements.
+
+Types of Commit:
+----------------
+	A DDL statement or a DCL statement is automatically committed by implicitly
+ 	commit and hence ends a transaction.
+	
+	Explicit Commit:
+	----------------
+	It is given by user, valid for only DML operations.
+
+ROLLBACK
+--------
+	It is used to cancel transactions which are not saved.
+
+SAVEPOINT
+---------
+	It is used to mark the current transaction.
+	Savepoints are used to identify a point in the Transaction to which you can
+	rollback rather than cancel the complete transaction.
+
+State of Data Before commit or Rollback
+----------------------------------------
+
+1. Every data change made during the transaction is temporary unti the transaction
+   is committed.
+
+2. Data Manipulation operations primarily do not affect the state of the data, 
+   hence they can be recovered.
+
+3. The current user can review the results of the Data Manipulation operations 
+   by queriying the tables.
+
+4. Other users can not view the results of the Data Manipulation made by the current
+   users.
+
+
+State of the Data After Commit is issued
+-----------------------------------------
+
+1. Data changes are written to the database permanently.
+
+2. The previous state of the data in the Database is permanently lost.
+
+3. All users can view the results of the recent transaction change.
+
+4. The locks on the affected rows are automatically released.
+
+5. All SAVEPOINT are erased.
+
+sql> commit;
+
+State of the Data after Rollback
+--------------------------------
+
+1. Rollback statement is used to Discard all pending changes.
+
+2. The data changes are undone.
+
+3. The previous state of the data is returned or restored.
+
+4. The locks on the affected rows are released automatically.
+
+sql> Rollback;
+
+Rolling Back Changes to a SAVEPOINT
+------------------------------------
+
+1. SAVEPOINT is used to create a marked in the current transaction.
+
+2. using SAVEPOINT the transaction can be discarded up to the marked by
+   using the ROLLBACK statement.
+
+sql> ROLLBACK TO <SAVEPOINT>;
+
+
+If a second SAVEPOINT is created with the same name as an earlier SAVEPOINT, the
+earlier SAVEPOINT is deleted.
+

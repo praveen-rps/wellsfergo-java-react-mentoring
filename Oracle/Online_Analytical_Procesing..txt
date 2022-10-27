@@ -1,0 +1,122 @@
+OLAP Features in ORACLE
+-----------------------
+
+Some Features for query procesing in Oracle include the use of ONLINE ANALYTICAL PROCESSING
+(OLAP) upon the database.
+
+OLAP features are useful for DataWarehousing and Data Mart Applications.
+
+The OLAP Operations are performance enhancements.
+	TOP-N-Queries.
+	GROUP BY
+	CUBE
+	ROLLUP
+
+Rollup Option
+-------------
+
+1. It is used with group by cluase to display the summarized data.
+
+2. Rollup grouping produces a results set containing the regular grouped rows
+   and the subtotal values.
+
+3. ROLLUP grouping produces subtotal and Grant Total.
+
+4. The totalling is based on a one dimensional data hierarchy of grouped information.
+
+Syntax
+-------
+
+GROUP BY <columnname> with ROLLUP;
+
+Examples
+--------
+
+sql> Select Deptno, sum(sal) from emp group by deptno with rollup;
+
+sql> select job, sum(sal) from emp group by job with rollup;
+
+sql> select deptno, avg(sal) from emp group by deptno with rollup;
+
+
+Passing Multiple columns to Rollup
+----------------------------------
+
+When multiple column are passed to ROLLUP, the ROLLUP, Groups the rows into blocks
+with the same column values.
+
+sql> select deptno, job, sum(sal) from emp group by rollup(deptno,job);
+
+sql> select job,deptno, sum(sal) totsal from emp group by rollup(job,deptno);
+
+sql> select job, deptno, avg(sal) totsal from emp group by rollup(job,deptno);
+
+
+NULL values in the output of ROLLUP operations typically mean that the row contains
+subtotal or Grant total information.
+
+Use NVL() function for proper meaning.
+
+CUBE operation
+--------------
+
+CUBE operation procedures a results set containg the rows from ROLLUP and cross-
+tabulation views.
+
+It is extension similar to rollup
+
+The result of the cube is a summary that shows subtotal for every comibiation of
+columns or expressions in the group by clause.
+
+sql> select deptno, job, sum(sal) from emp group by cube(deptno,job);
+
+sql> select job,deptno, sum(sal) from emp group b cube(job,deptno);
+
+
+GROUPPING() FUNCTION
+--------------------
+-> The Groupping() function accepts a column and returns 0 or 1.
+
+-> Goupping() function returns 1 when the column value is NULL, and returns 0
+   when the column value is not null.
+
+-> Grouping() function is useful when we want to display a value when a NULL would
+   otherwise be returned in OLAP queries.
+
+-> Grouping() function is used only upon queries that use ROLLUP or CUBE.
+
+sql> select grouping(Deptno), Deptno,sum(sal) from emp group by rollup(deptno);
+
+sql> select grouping(job),job, sum(sal) from emp group by rollup(job);
+
+sql> select grouping(job), job, deptno, sum(sal) from emp group by cub(job,deptno);
+
+DECODE() Function
+-----------------
+
+-> The DECODE function can be used to expand any abbreviation used in the table.
+
+-> The function works on the same principle as the IF-THEN-ELSE.
+
+-> We can pass a variable number of value into the call of the DECODE() function.
+
+-> The first item is may be column name or value that need to decoded.
+
+-> The function has no restriction on the INPUT and OUTPUT data type.
+
+-> The function can work for only an analysis that considersan equality operator in the
+   logical comparision.
+
+syntax:
+-------
+
+sql> SELECT DECODE(<columnname/value, <coded value>, <decoded val>,....); from <tablename>;
+
+sql> select Decode(deptno, 10,'Accounting',
+                   20,'Research',
+		   30,'SALES',
+	           40,'Operations',
+	           'Other') Departments from emp;
+
+Grouping() with DECODE()
+------------------------

@@ -1,0 +1,332 @@
+record identification
+record manipulation
+
+1001 praveen 10 20 40 10 kumar 30 59 76 
+
+
+
+Flat File
+---------
+1. Flat File Management System
+2. It does not support multi-user access
+3. It is only limited to smaller Data system
+4. Redundancy and Integrity issues
+5. It’s cheaper
+6. No support for complicated transactions
+
+COBOL 
+
+
+1. unstructured
+2. Semi structured
+3. structured
+
+xml
+---
+<students>
+		<student>
+				<name>praveen</name>
+				<branch>cse</branch>
+		</student>
+		<student>
+				<name>kumar</name>
+				<branch>civil</branch>
+		</student>
+</students>
+
+
+
+1001 praveen 59 76 87 |  | 1003 sunil 68 47 80
+
+
+MongoDb  ---NOSQL
+
+DynamoDb
+
+RDS
+
+
+
+
+
+Database Management Systems
+----------------------------
+DBMS provides an environment for storage, retrieval and processing of the data effectively.
+
+
+Database Management System is a software that is used to create, maintain and 
+provide controled access to user databses.
+
+Database Management systems should provide systematic method of
+	-> creating the database
+	-> updating the database
+	-> Storing the database
+	-> Retrieving the data from database
+	-> Mainting different levels of security
+
+Expected features of DBMS software
+----------------------------------
+
+1. Enable end user and application programmers to share the data.
+2. Enable data shared among multiple applicaiton.
+3. Should not propagate and store data in new files for every new 
+   application.
+4. Should provide facilty for
+	a. controlling data access
+	b. enforce data integrity
+	c. manage concurrency control
+	d. restoring the data in system failure.
+
+
+Evolution of DBMS
+-----------------
+
+It is introduced in 1960's
+relational model first defined by E.F Codd (IBM) in 1970.
+
+Here, are the important landmarks from the history:
+
+    1960 – Charles Bachman designed first DBMS system
+    1970 – Codd introduced IBM’S Information Management System (IMS)
+    1976- Peter Chen coined and defined the Entity-relationship model also know as the ER model
+    1980 – Relational Model becomes a widely accepted database component
+    1985- Object-oriented DBMS develops.
+    1990s- Incorporation of object-orientation in relational DBMS.
+    1991- Microsoft ships MS access, a personal DBMS and that displaces all other personal DBMS products.
+    1995: First Internet database applications
+    1997: XML applied to database processing. Many vendors begin to integrate XML into DBMS products.
+
+  2015 -- Onwards there is huge change in the way of implementing the data 
+with the growth of the cloud, people or organizations tends towards the shifting in cloud env
+for storing the data.
+
+
+DBMS
+----- 
+1. Database Management Systems
+2. Multi-user access 	
+3. Design to fulfill the need for small and large businesses 	.
+4. Remove redundancy and Integrity 	
+5. Expensive. But in the long term Total Cost of Ownership is cheap 	
+6. Easy to implement complicated transactions 	
+
+
+Objectives 
+----------
+
+1. Reduce the maintenance cost of software.
+2. Manage the complex data types.
+3. Provide easier and faster access to data even for end user.
+
+
+Users
+-----
+1. Application Programmers
+2. Database Administrators
+3. End Users
+
+Here, is the list of some popular DBMS system
+---------------------------------------------
+    MySQL
+    Microsoft Access
+    Oracle
+    PostgreSQL
+    dBASE
+    FoxPro
+    SQLite
+    IBM DB2
+    LibreOffice Base
+    MariaDB
+    Microsoft SQL Server etc.
+
+MongoDb
+RDS
+DynamoDb
+
+Employee(empid,name,dept,desg)
+
+10001,praveen,finance,manager
+10002,kumar,quality,executive
+
+MongoDb
+NoSQL
+DynamoDB
+Aurora
+
+
+Different Data Models
+---------------------
+1. Flat file DBMS
+2. Hierarchical DBMS
+3. Network Data DBMS
+4. Relational DBMS
+5. Object Relational DBMS
+
+purpose of DataModels
+----------------------
+communicate, describe, investigate, analyze and categorize.
+
+
+
+Database as per Oracle
+----------------------
+
+-> As per oracle database is collection of data in one or more number of files.
+-> The database is a collection of logical structures and physical structures
+   which are integrated and configured for the integrity of the system.
+
+
+
+Logical Structures
+-------------------
+
+* In design state the system is represented in the form of Entity Relational model.
+
+* In the database state is representation of the actual metadata of the 
+  database management system software which will be in the form of tablespaces,
+  data dictionary objects etc.,
+
+
+
+Physical Structures
+-------------------
+
+1. In this the system is represented in the form of tables, indexes etc.,
+2. Database should have the ability to provide access to external tables for
+   files outside the database, as if the rows in the files were rows in the 
+   table.
+3. Creating structures( Tables and Indexes)
+4. With in the oracle database, the basic structure is a table used to store data.
+
+
+
+Understanding the oracle sytle for the data storage
+----------------------------------------------------
+
+-> All the logical structures in the datbase must be stored with in the database only
+-> Oracle maintains a data dictionary, which records metadata about all the
+   database objects.
+-> The database objects which need physical storages space on the comuter 
+   system, are allocated space within the tablespace.
+
+
+Table Space
+-----------
+
+-> It is logical storage unit within oracle database and is not visible in the filesystem
+   of the machine on which the database resides.
+
+-> The table space builds the bridge betweeen the oracle database and the file system in
+   which the table's or index data is stored.
+
+-> A data file can be part of one and only one table space.
+
+-> There are three types of table spaces in oracle
+	1. permanent table space.
+	2. undo table space.
+	3. temporary table space.
+
+Permanent Tablespace
+---------------------
+ permanent tablespace contains persistent schema objects, 
+ Objects in permanent tablespaces are stored in datafiles.
+
+Undo tablespace
+----------------
+An undo tablespace is a type of permanent tablespace used by Oracle Database
+to manage undo data if you are running your database in automatic undo management mode.
+
+Temporary tablespace
+--------------------
+
+A temporary tablespace contains schema objects only for the duration of a session.
+Objects in temporary tablespaces are stored in tempfiles.
+
+
+-> Each table or index stored in an oracle database belongs to a table space.
+
+-> in 10g or later a big file table space can be created, which can grow to the size of Tera Bytes of 
+   space in on the disk.
+
+MySQL 
+-----
+
+Data  -- Representation of raw facts
+praveen    Hyderabad     FisGloabl    9948121217   
+
+Entity Set
+
+Entity is a physical or logical unit which participates in the application development
+customer(name,address,mobile,email)
+loan(lid,cid,amount,roi,md)
+transaction(x,y,zy);
+
+branch(x,y,zy)
+
+UML -----> ER  ---->
+
+in the form attributes
+
+Student(htno,name,branch,m1,m2,m3)
+
+It is discreate in nature.
+
+
+Information - Processed data is called information
+
+
+Entity
+Entity Set
+Super Key
+
+Entity Relation
+
+Types of Relations
+
+
+a.  one to one  ---> One Entity will be assciated with only one instace of another entity
+
+b.  one to many  --->  
+
+c.  many to many  ---> 
+
+Normalization
+-------------
+The process of grouping the columns so as to produdce the entity sets which will reduce the 
+redundancy and anomolies in the data.
+
+The process of splitting the single redundant table into small consitutent multiple tables without
+having the redundacny and anomolies in the data.
+
+Dept
+-----
+101,fianance,boston
+102,quality,chicago
+103,marketing,los vegas
+
+
+
+
+9001,praveen,clerk,101
+
+
+
+create index <indexname> on <tablename(columnaname)>;
+create index ind_fiscustomers on fiscustomers(cid);
+
+crerate index ind_buildname on buildings(building_name);
+
+
+Limitations
+------------
+1. when you dont have large set of data.
+2. when you are not performing any operation on the non keys.
+
+
+
+
+
+
+
+
+

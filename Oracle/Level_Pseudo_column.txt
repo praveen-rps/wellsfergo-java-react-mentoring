@@ -1,0 +1,66 @@
+The LEVEL pseudo column returns 1 for root row,
+2 for a child of a root and so on.
+
+1. Child - > any non root node
+
+2. Root - > Highest node within an inverted tree.
+
+3. Parent - > Any node/row that has children.
+
+4. Leaf - > any node without children.
+
+5. To establish the hierarchical relationship with LEVEL we need
+	START WITH CLAUSE		
+	CONNECT BY CLAUSE.
+
+
+sql> select ename,job,mgr, level from emp;
+
+sql> select level, ename, empno,mgr, job from emp
+     start with job="president'
+     connect by Prior empno=mgr
+     order by level;
+
+sql> select lpad(' ',2*(level-1)) || ename org_level, empno, mgr,job
+     from emp
+     start with job='president'
+     connect by prior empno=mgr;
+
+sql> select lpad(' ',2*(level-1))|| ename org_level, empno,mgr,job
+     from emp
+     start witj job='president'
+     connect by prior empno=mgr and 
+     level<=2;
+
+Select Nth highest value from table
+-----------------------------------
+
+Syntax
+------
+     select level,max(colname) from tablename
+     where  level = &levelno
+     connect by prior colname >colname
+     group by level
+
+sql> select level, max(sal) from emp
+     where level =&level 
+     connect by prior sal>sal
+     group by sal;
+
+
+Select Nth Lowest value from table
+----------------------------------
+
+syntax
+------
+     select level,min(colname) from tablename
+     where  level = &levelno
+     connect by prior colname < colname
+     group by level
+
+
+sql> select level, min(sal) from emp
+     where level =&level 
+     connect by prior sal<sal
+     group by sal;
+

@@ -1,0 +1,79 @@
+Synonyms
+--------
+
+It is Data Base Object, which acts as an alternative name for an existing object,
+next to view.
+
+The CREATE SYNONYM privilege is necessary to execute the creation of a synonym.
+
+simplify access to objects by creating a synonym (another name for an object)
+with synonyms you can:
+
+	ease refering to a table owned by another user.
+	shorten lengthy object names,
+	
+DML, Description, Select allowed on SYNONYM provides security
+USER_SYNONYMS tables holds details of synonyms.
+
+There are two types of synonyms: 1. private and 2. Public.
+
+private Synonym
+---------------
+created by user.
+used by specific users which have permission.
+
+syntax:
+-------
+
+CREATE [PUBLIC] SYNONYM <SYN_NAME> FOR [USERNAME] <Dbobjectname>[@databse link];
+
+
+
+eg>
+
+CREATE SYNONYM empdept for emp;
+
+sql> CREATE SYNONYM emp_syn for scott.emp;
+
+sql> insert into empdet(empno,ename,job,deptno) values (1001,'praveen','manager',20);
+
+sql> select  * from empdet where deptno=20;
+
+sql> grant all on empdet to scott;
+
+sql> select * from scott.empdet;
+
+sql> select synonym_name from user_synonyms where table_name='emp';
+
+PUBLIC SYNONYM
+--------------
+created by database Administrators.
+we should have create public synonym privilege and it can be accessed by al users.
+
+syntax
+------
+CREATE PUBLIC SYNONYM <SYN_NAME> FOR <DBOJECT>.TABLENAME;
+
+sql> select synonym_name from all_synonyms where table_name='temp';
+
+It is created for
+
+**Table 	**View	**procedure	**Function	**Package
+
+It is used for hiding the information as
+	user name
+	Object name
+	Database link for security purpose.
+
+It an be also use to provide short name to object.
+
+It takes minimum space only for name,
+
+Remove:
+------
+
+	It drop the table the synonym of that table become as invalid.
+
+sql> DROP SYNONYM EMPDET;
+
+ 

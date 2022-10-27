@@ -1,0 +1,102 @@
+What is Exception Handling?
+----------------------------
+PL/SQL provides a feature to handle the Exceptions which occur in a PL/SQL Block known as exception Handling. 
+Using Exception Handling we can test the code and avoid it from exiting abruptly.
+
+When an exception occurs a messages which explains its cause is recieved. 
+PL/SQL Exception message consists of three parts. 
+1) Type of Exception
+2) An Error Code
+3) A message 
+
+
+By Handling the exceptions we can ensure a PL/SQL block does not exit abruptly.
+
+
+ 
+2) Structure of Exception Handling.
+General Syntax for coding the exception section
+
+ DECLARE
+   Declaration section 
+ BEGIN 
+   Exception section 
+ EXCEPTION 
+ WHEN ex_name1 THEN 
+    -Error handling statements 
+ WHEN ex_name2 THEN 
+    -Error handling statements 
+ WHEN Others THEN 
+   -Error handling statements 
+END; 
+
+
+NESTED BLOCKS
+-------------
+
+If there are nested PL/SQL blocks like this.
+
+ DELCARE
+   Declaration section 
+ BEGIN
+    DECLARE
+      Declaration section 
+    BEGIN 
+      Execution section 
+    EXCEPTION 
+      Exception section 
+    END; 
+ EXCEPTION
+   Exception section 
+ END; 
+
+In the above case, if the exception is raised in the inner block it should be handled in the exception block 
+of the inner PL/SQL block else the control moves to the Exception block of the next upper PL/SQL Block. 
+If none of the blocks handle the exception the program ends abruptly with an error.
+
+
+
+3) Types of Exception.
+----------------------
+
+There are 3 types of Exceptions. 
+
+a) Named System Exceptions 
+b) Unnamed System Exceptions 
+c) User-defined Exceptions
+
+
+
+
+Exception Name			Reason								Error Number
+---------------			------								------------
+	
+CURSOR_ALREADY_OPEN		When you open a cursor that is already open.   			ORA-06511
+
+INVALID_CURSOR			When you perform an invalid operation on a cursor like 		ORA-01001
+				closing a cursor, fetch data from a cursor that is not opened.
+
+NO_DATA_FOUND 			When a SELECT...INTO clause does not return any row 		ORA-01403
+				from a table.
+
+	
+TOO_MANY_ROWS			When you SELECT or fetch more than one row into a 		ORA-01422
+				record or variable.
+
+
+ZERO_DIVIDE			When you attempt to divide a number by zero.			ORA-01476
+
+
+For Example: 
+Suppose a NO_DATA_FOUND exception is raised in a proc, we can write a code to handle the exception as given below.
+
+BEGIN 
+  Execution section
+EXCEPTION 
+WHEN NO_DATA_FOUND THEN 
+ dbms_output.put_line ('A SELECT...INTO did not return any row.'); 
+ END; 
+
+
+
+

@@ -1,0 +1,225 @@
+Functions
+----------
+These are used to solve some particular task. these
+are of two types
+1. predefined 
+2. user defined.
+General functions
+-----------------
+
+1. NVL: It is used to convert a null value to an actal value. (for Oracle only)
+
+syntax:	
+	NVL(expr1,expr2);
+	where expr1 is source column
+	expr2 is value to be replaced.
+
+select ename,sal,comm, sal+nvl(comm,0) from emp;
+select nvl(100,200) from dual;
+
+2. coalesce: It returns first non-null expression in the expression list
+ select coalesce(100,600,200) from dual;
+ select coalesce(null,600,200) from dual;
+ select ename, deptno, coalesce(comm, sal,10) comm from emp
+
+
+3. DISTINCT: To filter duplicate rows.
+ select distinct job from emp;
+ select distinct deptno, job from emp;
+
+
+Operators
+---------
+1. Arthimetic Operators
+2. Relational Operators
+3. logical Operators.
+
+combinaton of and or operators
+------------------------------
+
+1. select ename, sal from emp where (job='clerk' or job='president') and sal >3000;
+
+2. select empno,ename,job, sal from emp where (sal>1500 or job='manager') and deptno=10;
+
+3. select empno,ename,job,sal from emp where (deptno=20 or job='manager') and sal>=3000;
+
+
+Special Operators
+-----------------
+
+1. BETWEEN ... NOT BETWEEN
+
+2. IN ... NOT IN
+
+3. LIKE ... NOT LIKE
+
+4. IS NULL ... IS NOT NULL
+
+5. ORDER BY CLAUSE [ASEC| DESC] DEFAULT ASEC;
+
+group by is used to group the records and apply the aggreaget operations
+
+predefined
+----------
+1. Number Functions
+2. Character functions
+3. Date functions
+4. Group or Aggregate Functions
+
+Number Functions
+----------------
+
+1. abs(): used to retrevie the absolute value 
+
+	select abs(-5) from dual;
+
+2. mod(m,n): It is used to get reminder 	
+	select mod(10,2) from dual;
+	-> 0
+
+3. round(m,n): It is used to round the given float value m to
+   to the n digits.
+
+	select round(1.7) from dual;
+	-> 2
+	select round(1.23456,3) from dual;
+	-> 1.235
+
+4. truncate(m.n): it is used to truncate the given float value m to
+   to n digits
+
+	select truncate(1.8) from dual;
+	-> 
+	select truncate(1.2345678,3) from dual;
+	-> 1.234
+
+5. greatest(exp1,exp2,exp3....) or least(exp1,exp2,exp3....)
+
+   These are used to find the greatet and least values among the
+   given values.
+
+	select greatest(3,7,29) from dual;
+	-> 29
+
+	select least(0,19,-1,8) from dual;
+	-> -1
+
+6. ceil() or floor():
+
+	ceil(): returns the nearest greatest integer
+	floor(): returns the nearest smallest integer.
+
+	select ceil(1.2) from dual;
+	-> 2
+
+	select floor(1.2) from dual;
+	-> 1
+
+Character Functions: These functions operate over the characters
+-------------------
+
+1. upper(): It returns the uppercase letter of the given word
+	select upper('apple') from dual;
+	-> APPLE
+	select upper(ename) from dual;
+
+2. lower(): It returns the lowercase letter of the given word
+	select lower('APPLE') from dual;
+	-> apple
+	select lower(ename) from dual;
+
+3. initcap(): It returns the initial cap of the given word.
+	select init cap('ab cd ef') from dual;
+	-> Ab Cd Ef
+
+4. length(): It returns the length of the given string.
+
+	select length('praveen') from dual;
+	-> 7
+
+5. substr(column/string, sep_position, no_of_characters):
+	It is used to find the substring from the sep_position to no_of_characters
+
+	select substr('abcdefgh',2,3) from dual;
+	-> bcd
+
+	select substr('abcdefgh',-2,3) from dual
+	-> gh
+
+6. LPAD(str,size,fil_char): It fills the remaining characters of the str with fil_char to the left
+	select LPAD('ABCD',10,'#');
+	######ABCD
+
+7. RPAD(str,size,fil_char): It fills the remaining characters of the str with fil_char to the right
+	select RPAD('ABCD',10,'#');
+	ABCD######
+
+	select RPAD(ename,40,'-')||sal from dual;
+
+Date Functions
+--------------
+
+1. sysdate
+2. add_months(x,y): Adds y number of months to xth month
+3. last_day(x): It returns the last day of the x month
+4. next_day(x,day): it returns the datetime of the next day after x
+5. months_between(x,y): it returns the number of months between given dates x and y
+
+Date Arthimatic
+---------------
+
+1. Date + 1
+
+2. Date - 1
+
+3. Date1 - Date 2
+
+Date Conversion Functions
+-------------------------
+
+1. to_char(date,char): this function is used to convert the given date datatype to character type
+	
+	select to_char(sysdate,'DD/MM/YY') from dual;
+	-> 13/12/16
+
+	basically to_char is a case sensitive
+
+	select to_char(sysdate,'DAY') from dual;
+	-> TUESDAY
+
+	select to_char(sysdate,'day') from dual;
+	-> tuesday
+
+	select to_char(sysdate,'DY') from dual;
+	-> THU
+
+	select to_char(sysdate,'D') from dual;
+	-> 13
+
+2. to_date(string,date): this function is used to convert datetype string to date datatype
+
+	select to_date('13/dec/16') from dual;
+	-> 13-DEC-16
+
+	select to_date('13/12/16') from dual;
+	-> Error not valid month
+
+	select to_date('13/12/16','DD/MM/YY') from dual;
+	-> 13-DEC-16
+
+	select to_char(to_date('13-DEC-16'), 'DAY/MONTH/YY') from dual;
+	-> TUESDAY / DECEMBER / 13
+
+Note: Whenever we are using to_date() function, the first parameter must follow format mask, of the
+      oracle default date formate ie., to_date() parameter return value match with default date 
+      format return value.
+
+
+
+
+
+
+
+	
+	
+

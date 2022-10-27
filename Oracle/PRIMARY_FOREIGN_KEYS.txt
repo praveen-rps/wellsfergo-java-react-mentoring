@@ -1,0 +1,218 @@
+SQL Constraints:
+----------------
+Constraints are the rules enforced on data columns on table. 
+These are used to limit the type of data that can go into a table. 
+This ensures the accuracy and reliability of the data in the database.
+
+Constraints could be column level or table level. 
+
+Column level constraints are applied only to one column, whereas
+table level constraints are applied to the whole table.
+
+
+Following are commonly used constraints available in SQL:
+---------------------------------------------------------
+1. NOT NULL Constraint: Ensures that a column cannot have NULL value.
+
+2. DEFAULT Constraint: Provides a default value for a column when none is specified.
+
+3. UNIQUE Constraint: Ensures that all values in a column are different.
+
+4. PRIMARY Key: Uniquely identified each rows/records in a database table.
+
+5. FOREIGN Key: Uniquely identified a rows/records in any another database table.
+
+6. CHECK Constraint: The CHECK constraint ensures that all values in a column satisfy certain conditions.
+
+7. INDEX: Use to create and retrieve data from the database very quickly.
+
+
+
+NOT NULL Constraint:
+--------------------
+
+By default, a column can hold NULL values. 
+
+If you do not want a column to have a NULL value, then you need to
+define such constraint on this column specifying that NULL is now not allowed for that column.
+
+A NULL is not the same as no data, rather, it represents unknown data.
+
+Eg.
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2),
+ PRIMARY KEY (ID)
+);
+
+
+
+If CUSTOMERS table has already been created, then to add a NOT NULL constraint to SALARY column in Oracle
+and MySQL, you would write a statement similar to the following:
+
+ALTER TABLE CUSTOMERS
+ MODIFY SALARY DECIMAL (18, 2) NOT NULL;
+
+
+
+DEFAULT Constraint:
+--------------------
+The DEFAULT constraint provides a default value to a column when the INSERT INTO statement does not provide
+a specific value.
+
+Eg.
+
+For example, the following SQL creates a new table called CUSTOMERS and adds five columns. Here, SALARY
+column is set to 5000.00 by default, so in case INSERT INTO statement does not provide a value for this column.
+then by default this column would be set to 5000.00.
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2) DEFAULT 5000.00,
+ PRIMARY KEY (ID)
+);
+
+
+If CUSTOMERS table has already been created, then to add a DFAULT constraint to SALARY column, you would
+write a statement similar to the following:
+
+
+ALTER TABLE CUSTOMERS
+ MODIFY SALARY DECIMAL (18, 2) DEFAULT 5000.00;
+
+Drop Default Constraint:
+------------------------
+
+To drop a DEFAULT constraint, use the following SQL:
+
+
+ALTER TABLE CUSTOMERS
+ ALTER COLUMN SALARY DROP DEFAULT;
+
+
+
+
+UNIQUE Constraint:
+------------------
+The UNIQUE Constraint prevents two records from having identical values in a particular column. 
+In the CUSTOMERS table, for example, you might want to prevent two or more people from having identical age.
+
+eg.
+
+The following SQL creates a new table called CUSTOMERS and adds five columns. Here, AGE
+column is set to UNIQUE, so that you can not have two records with same age:
+
+
+CREATE TABLE CUSTOMERS(
+ ID INT NOT NULL,
+ NAME VARCHAR (20) NOT NULL,
+ AGE INT NOT NULL UNIQUE,
+ ADDRESS CHAR (25) ,
+ SALARY DECIMAL (18, 2),
+ PRIMARY KEY (ID)
+);
+
+
+
+If CUSTOMERS table has already been created, then to add a UNIQUE constraint to AGE column, you would write
+a statement similar to the following:
+
+ALTER TABLE CUSTOMERS
+ MODIFY AGE INT NOT NULL UNIQUE;
+
+
+You can also use following syntax, which supports naming the constraint in multiple columns as well:
+
+ALTER TABLE CUSTOMERS
+ ADD CONSTRAINT myUniqueConstraint UNIQUE(AGE, SALARY);
+ DROP a UNIQUE Constraint:
+
+
+To drop a UNIQUE constraint, use the following SQL:
+
+ALTER TABLE CUSTOMERS
+ DROP CONSTRAINT myUniqueConstraint;
+
+
+
+To create primary key
+----------------------
+
+CREATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL,
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),       
+       PRIMARY KEY (ID)
+);
+
+
+To add a primary key to an existing table
+-----------------------------------------
+ALTER TABLE CUSTOMER ADD PRIMARY KEY (ID);
+
+
+
+To create a primary key on multiplie keys
+------------------------------------------
+REATE TABLE CUSTOMERS(
+       ID   INT              NOT NULL,
+       NAME VARCHAR (20)     NOT NULL,
+       AGE  INT              NOT NULL,
+       ADDRESS  CHAR (25) ,
+       SALARY   DECIMAL (18, 2),        
+       PRIMARY KEY (ID, NAME)
+);
+
+
+
+to add to an existing table
+---------------------------
+
+ALTER TABLE CUSTOMERS 
+   ADD CONSTRAINT PK_CUSTID PRIMARY KEY (ID, NAME);
+
+
+To Delete primary key
+---------------------
+
+ALTER TABLE CUSTOMERS DROP PRIMARY KEY ;
+
+
+To Create a foreign key
+-----------------------
+
+CREATE TABLE ORDERS (
+	ID INT NOT NULL,
+	PNAME VARCHAR2(10),
+	PDATE DATE,
+	FOREIGN KEY(ID) REFERENCES CUSTOMERS(ID)
+);
+
+
+To add a foreign key to existing table
+--------------------------------------
+
+ALTER TABLE ORDERS ADD FOREIGN KEY(ID) REFERENCES CUSTOMERS(ID);
+
+To add a foreign key with constraint name
+------------------------------------------
+
+ALTER TABLE ORDERS ADD CONSTRAINT FK_CONSTRAINT FOREIGN KEY(ID) REFERENCES CUSTOMERS(ID)
+
+
+TO Delete foreign key
+---------------------
+
+ALTER TABLE ORDERS DROP CONSTRAINT FK_CONSTRAINT;
+
+

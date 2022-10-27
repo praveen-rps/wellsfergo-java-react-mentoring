@@ -1,0 +1,55 @@
+MySQL supports the following types of joins:
+
+    Inner join
+    Left join
+    Right join
+    Cross join
+
+
+CREATE TABLE members (
+    member_id INT AUTO_INCREMENT,
+    name VARCHAR(100),
+    PRIMARY KEY (member_id)
+);
+
+CREATE TABLE committees (
+    committee_id INT AUTO_INCREMENT,
+    name VARCHAR(100),
+    PRIMARY KEY (committee_id)
+);
+
+INSERT INTO members(name)
+VALUES('John'),('Jane'),('Mary'),('David'),('Amelia');
+
+INSERT INTO committees(name)
+VALUES('John'),('Mary'),('Amelia'),('Joe');
+
+
+
+MySQL INNER JOIN clause
+-----------------------
+
+SELECT column_list
+FROM table_1
+INNER JOIN table_2 ON join_condition;
+
+
+
+SELECT 
+    m.member_id, 
+    m.name AS member, 
+    c.committee_id, 
+    c.name AS committee
+FROM
+    members m
+INNER JOIN committees c ON c.name = m.name;
+
+
+SELECT 
+    m.member_id, 
+    m.name AS member, 
+    c.committee_id, 
+    c.name AS committee
+FROM
+    members m
+INNER JOIN committees c USING(name);

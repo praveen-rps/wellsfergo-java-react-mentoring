@@ -1,0 +1,53 @@
+SEQUENCE
+--------
+
+
+	Sequence is a schema object that can be generate unique sequential values.
+	
+	the sequence values are often user for primary keys and unique keys.
+
+	to refer to the current or next value of sequence in the scheme of another use, the following
+	previliges be available.
+
+	1. SELECT OBJECT PRIVILAGE
+
+	2. SELECT ANY SEQUENCE
+
+
+	CREATING SEQUENCES:
+	-------------------
+
+	SYNTAX:
+
+	CREATE SEQUENCE <SEQUENCENAME> INCREMENT BY N
+	START WITH M
+	MAXVALUE N | NOMAXVALUE
+	MINVALUE M | NOMINVALUE
+	CYCLE | NOCYCLE
+	CACHE N| NOCACHE
+	ORDER | NOORDER
+
+
+	CREATE SEQUENCE TDEPT_SEQ INCREMENT BY 10 START WITH 10 MINVALUE 0 MAXVALUE 9999 NOCACHE NOCYCLE.
+
+
+	CREATE TABLE TDEPT
+	(
+		DEPTNO NUMBER(4) CONTRAINT TDEPT_NO PRIMARY KEY,
+		DNAME VARCHAR2(14),
+		DLOC VARCHAR2(15)
+	);
+
+
+	INSERT INTO TDEPT VALUES(TDEPT_SEQ.NEXTVAL, 'SOFTWARE','HYDERABAD');
+
+	TO VIEW THE CURRENT VALUE IN SEQUENCE
+	-------------------------------------
+
+	SELECT TDEPT_SEQ.CURRVAL FROM DUAL;
+
+	TO REMOVE THE SEQUENCE
+	----------------------
+	
+	DROP SEQUENCE TDEPT_SEQ
+
